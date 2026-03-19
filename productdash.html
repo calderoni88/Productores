@@ -106,9 +106,27 @@ input, select, textarea { font-family: var(--font); }
   box-shadow: var(--shadow);
 }
 
-/* Logo SVG */
-.logo-svg { display: flex; align-items: center; gap: 0; flex-shrink: 0; }
-.logo-svg .wm { height: 22px; width: auto; }
+/* Logo */
+.logo-vc {
+  display: flex; align-items: center; flex-shrink: 0;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  font-size: 22px; letter-spacing: -0.5px; line-height: 1;
+  color: var(--text); white-space: nowrap; gap: 0;
+}
+.logo-vc .logo-tri {
+  display: inline-flex; flex-direction: column; align-items: center;
+  position: relative; margin: 0 -1px;
+}
+.logo-vc .logo-tri span { display: block; }
+.logo-vc .logo-tri .tri-dot {
+  width: 0; height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 8px solid #39FF14;
+  margin-bottom: -1px;
+  flex-shrink: 0;
+}
+[data-theme="light"] .logo-vc .logo-tri .tri-dot { border-bottom-color: #1A9900; }
 
 .top-divider { width: 1px; height: 22px; background: var(--border2); flex-shrink: 0; }
 .top-label { font-size: 10px; font-weight: 600; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
@@ -139,19 +157,56 @@ input, select, textarea { font-family: var(--font); }
 .up { color: var(--accent); }
 .dn { color: var(--red); }
 
-/* Alerts */
-.a-badge {
-  font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px;
-  display: flex; align-items: center; gap: 5px; cursor: pointer;
-  border: 1px solid; transition: opacity 0.12s; white-space: nowrap; flex-shrink: 0;
+/* Bell button */
+.bell-btn {
+  width: 32px; height: 32px; border-radius: var(--r); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  background: var(--bg3); transition: all 0.12s; flex-shrink: 0; position: relative;
 }
-.a-badge:hover { opacity: 0.75; }
-.a-badge.red { background: var(--red-d); color: var(--red); border-color: rgba(255,68,68,0.22); }
-.a-badge.amber { background: var(--amber-d); color: var(--amber); border-color: rgba(255,187,0,0.22); }
-.pulse { width: 5px; height: 5px; border-radius: 50%; animation: pulse 2s infinite; flex-shrink: 0; }
-.pulse.red { background: var(--red); }
-.pulse.amber { background: var(--amber); }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+.bell-btn:hover { border-color: var(--border3); }
+.bell-btn svg { width: 15px; height: 15px; color: var(--text2); transition: color 0.12s; }
+.bell-btn:hover svg { color: var(--text); }
+.bell-btn.has-alerts svg { color: var(--red); }
+.bell-count {
+  position: absolute; top: -4px; right: -4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--red); color: #fff; font-size: 8px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--bg2); font-family: var(--mono);
+}
+
+/* Alert dropdown panel */
+#alert-panel {
+  position: fixed; top: calc(var(--topbar) + 6px); right: 80px;
+  width: 340px; background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: var(--r2); box-shadow: var(--shadow2); z-index: 500;
+  display: none; flex-direction: column; overflow: hidden;
+  animation: fadeDown 0.15s ease;
+}
+#alert-panel.open { display: flex; }
+@keyframes fadeDown { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+.ap-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px 9px; border-bottom: 1px solid var(--border);
+}
+.ap-title { font-size: 12px; font-weight: 700; color: var(--text); }
+.ap-close { font-size: 11px; color: var(--text3); cursor: pointer; padding: 2px 5px; border-radius: var(--r); transition: color 0.1s; }
+.ap-close:hover { color: var(--text); }
+.ap-list { max-height: 360px; overflow-y: auto; }
+.ap-item {
+  display: flex; align-items: flex-start; gap: 9px;
+  padding: 9px 14px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background 0.08s;
+}
+.ap-item:last-child { border-bottom: none; }
+.ap-item:hover { background: var(--bg3); }
+.ap-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.ap-dot.r { background: var(--red); }
+.ap-dot.a { background: var(--amber); }
+.ap-dot.b { background: var(--blue); }
+.ap-title2 { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.35; }
+.ap-sub { font-size: 11px; color: var(--text2); margin-top: 1px; }
+.ap-time { font-size: 10px; color: var(--text3); white-space: nowrap; }
 
 /* Theme toggle */
 .theme-btn {
@@ -178,20 +233,23 @@ input, select, textarea { font-family: var(--font); }
 #body { display: flex; flex: 1; overflow: hidden; }
 
 /* ══════════════════════════════════════════════════════════
-   LEFT NAV (views)
+   LEFT SIDEBAR — unified nav + filters
 ══════════════════════════════════════════════════════════ */
 #leftnav {
-  width: var(--nav); min-width: var(--nav); flex-shrink: 0;
+  width: 188px; min-width: 188px; flex-shrink: 0;
   background: var(--bg2); border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; padding: 12px 0; overflow-y: auto;
+  display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;
 }
-.sbs { font-size: 9px; font-weight: 700; color: var(--text3); padding: 14px 14px 4px; letter-spacing: 1px; text-transform: uppercase; }
-.sbs:first-child { padding-top: 4px; }
+#filter-sidebar {
+  display: contents; /* renders children inline inside #leftnav */
+}
+.sbs { font-size: 9px; font-weight: 700; color: var(--text3); padding: 14px 13px 4px; letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0; }
+.sbs:first-child { padding-top: 10px; }
 .sbi {
   display: flex; align-items: center; gap: 9px;
-  padding: 7px 14px; font-size: 12.5px; font-weight: 500; color: var(--text2);
+  padding: 6px 13px; font-size: 12px; font-weight: 500; color: var(--text2);
   cursor: pointer; transition: all 0.1s; border-left: 2px solid transparent;
-  margin-right: 8px; border-radius: 0 var(--r) var(--r) 0;
+  margin-right: 6px; border-radius: 0 var(--r) var(--r) 0; flex-shrink: 0;
 }
 .sbi:hover { background: var(--bg3); color: var(--text); }
 .sbi.active { background: var(--accent-d); color: var(--accent); border-left-color: var(--accent); }
@@ -199,44 +257,32 @@ input, select, textarea { font-family: var(--font); }
 .sbi.active svg { opacity: 1; }
 .sbi-badge { margin-left: auto; font-size: 9px; padding: 1px 5px; border-radius: 10px; background: var(--red-d); color: var(--red); font-weight: 700; }
 
-/* ══════════════════════════════════════════════════════════
-   FILTER SIDEBAR (left, only in cartera view)
-══════════════════════════════════════════════════════════ */
-#filter-sidebar {
-  width: var(--filters); min-width: var(--filters); flex-shrink: 0;
-  background: var(--bg2); border-right: 1px solid var(--border);
-  overflow-y: auto; padding: 14px 0;
-  display: flex; flex-direction: column; gap: 0;
-}
+/* Filter section inside left sidebar */
+.fs-divider { height: 1px; background: var(--border); margin: 6px 0; flex-shrink: 0; }
 .fs-head {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 14px 12px; border-bottom: 1px solid var(--border); margin-bottom: 2px;
+  padding: 10px 13px 6px; flex-shrink: 0;
 }
-.fs-title { font-size: 11px; font-weight: 700; color: var(--text); letter-spacing: 0.3px; }
-.fs-reset { font-size: 10.5px; color: var(--accent); cursor: pointer; padding: 2px 6px; border-radius: var(--r); border: 1px solid var(--border3); background: var(--accent-d); font-weight: 500; transition: all 0.1s; }
+.fs-title { font-size: 9px; font-weight: 700; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; }
+.fs-reset { font-size: 9.5px; color: var(--accent); cursor: pointer; padding: 1px 5px; border-radius: var(--r); border: 1px solid var(--border3); background: var(--accent-d); font-weight: 600; transition: all 0.1s; }
 .fs-reset:hover { background: var(--accent-d2); }
-
-.fs-group { padding: 12px 14px; border-bottom: 1px solid var(--border); }
-.fs-group:last-child { border-bottom: none; }
-.fs-label { font-size: 9.5px; font-weight: 700; color: var(--text3); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 8px; }
-.fs-chips { display: flex; flex-direction: column; gap: 3px; }
+.fs-group { padding: 4px 13px 10px; flex-shrink: 0; }
+.fs-label { font-size: 9px; font-weight: 700; color: var(--text3); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 5px; }
+.fs-chips { display: flex; flex-direction: column; gap: 1px; }
 .fs-chip {
   display: flex; align-items: center; justify-content: space-between;
-  font-size: 12px; font-weight: 500; padding: 5px 9px; border-radius: var(--r);
-  cursor: pointer; transition: all 0.1s; border: 1px solid transparent;
-  color: var(--text2);
+  font-size: 11.5px; font-weight: 500; padding: 4px 8px; border-radius: var(--r);
+  cursor: pointer; transition: all 0.1s; border: 1px solid transparent; color: var(--text2);
 }
 .fs-chip:hover { background: var(--bg3); color: var(--text); }
 .fs-chip.on { background: var(--accent-d); color: var(--accent); border-color: var(--border3); }
-.fs-chip-count { font-size: 10px; color: var(--text3); font-family: var(--mono); }
-.fs-chip.on .fs-chip-count { color: var(--accent2); }
-
-/* Range sliders */
-.fs-range { display: flex; flex-direction: column; gap: 6px; }
+.fs-chip-count { font-size: 9.5px; color: var(--text3); font-family: var(--mono); }
+.fs-chip.on .fs-chip-count { color: var(--accent); opacity: 0.7; }
+.fs-range { display: flex; flex-direction: column; gap: 5px; }
 .fs-range-row { display: flex; align-items: center; justify-content: space-between; }
 .fs-range-label { font-size: 11px; color: var(--text2); }
-.fs-range-val { font-size: 11px; font-family: var(--mono); color: var(--accent); font-weight: 500; }
-.fs-slider { width: 100%; accent-color: var(--accent); cursor: pointer; }
+.fs-range-val { font-size: 10.5px; font-family: var(--mono); color: var(--accent); font-weight: 500; }
+.fs-slider { width: 100%; accent-color: var(--accent); cursor: pointer; height: 14px; }
 
 /* ══════════════════════════════════════════════════════════
    MAIN CONTENT
@@ -371,7 +417,7 @@ tbody tr:hover td { background: var(--bg3); }
 /* ══════════════════════════════════════════════════════════
    MAIN ROW
 ══════════════════════════════════════════════════════════ */
-.row-main { display: grid; grid-template-columns: 1fr 300px; gap: 10px; }
+.row-main { display: grid; grid-template-columns: 1fr; gap: 10px; }
 .row-right { display: flex; flex-direction: column; gap: 10px; }
 .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
@@ -490,19 +536,9 @@ tbody tr:hover td { background: var(--bg3); }
 
 <!-- ══════════════ TOPBAR ══════════════ -->
 <div id="topbar">
-  <!-- Logo VetaCap -->
-  <div class="logo-svg">
-    <svg class="wm" viewBox="0 0 260 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- VET -->
-      <text x="0" y="34" font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="38" fill="var(--text)" letter-spacing="-1">VET</text>
-      <!-- A with green triangle -->
-      <g transform="translate(107,0)">
-        <text x="0" y="34" font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="38" fill="var(--text)" letter-spacing="-1">A</text>
-        <polygon points="12,36 20,23 28,36" fill="#39FF14"/>
-      </g>
-      <!-- CAP -->
-      <text x="135" y="34" font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="38" fill="var(--text)" letter-spacing="-1">CAP</text>
-    </svg>
+<!-- Logo VetaCap — HTML wordmark -->
+  <div class="logo-vc">
+    <span>VET</span><span class="logo-tri"><span class="tri-dot"></span><span>A</span></span><span>CAP</span>
   </div>
   <div class="top-divider"></div>
   <span class="top-label">ProductDash</span>
@@ -526,8 +562,13 @@ tbody tr:hover td { background: var(--bg3); }
     <div class="ti"><span class="ti-l">YPF</span><span class="ti-v">$39.420</span><span class="ti-c dn">-0.6%</span></div>
   </div>
 
-  <div class="a-badge red" onclick="filterByEstado('Riesgo')"><span class="pulse red"></span>5 en riesgo</div>
-  <div class="a-badge amber" onclick="filterByEstado('Inactivo')"><span class="pulse amber"></span>7 inactivos</div>
+  <button class="bell-btn has-alerts" onclick="toggleAlertPanel()" title="Alertas" id="bellBtn">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 2a6 6 0 0 1 6 6c0 3.5 1 4.5 1.5 5H2.5C3 13 4 12 4 8a6 6 0 0 1 6-6z"/>
+      <path d="M8.5 17a1.5 1.5 0 0 0 3 0"/>
+    </svg>
+    <span class="bell-count">10</span>
+  </button>
 
   <button class="theme-btn" onclick="toggleTheme()" title="Cambiar modo">
     <span id="theme-icon">☀️</span>
@@ -538,9 +579,9 @@ tbody tr:hover td { background: var(--bg3); }
 <!-- ══════════════ BODY ══════════════ -->
 <div id="body">
 
-<!-- Left Nav -->
+<!-- UNIFIED LEFT SIDEBAR -->
 <aside id="leftnav">
-  <div class="sbs">Cartera</div>
+  <div class="sbs" style="padding-top:10px">Cartera</div>
   <div class="sbi active" onclick="switchView('cartera',this)">
     <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="currentColor"/><rect x="8" y="1" width="5" height="5" rx="1" fill="currentColor"/><rect x="1" y="8" width="5" height="5" rx="1" fill="currentColor"/><rect x="8" y="8" width="5" height="5" rx="1" fill="currentColor"/></svg>
     Mis clientes
@@ -569,75 +610,68 @@ tbody tr:hover td { background: var(--bg3); }
     <svg viewBox="0 0 14 14" fill="none"><path d="M2 2h10v8l-3 2H2V2z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/><line x1="4.5" y1="5" x2="9.5" y2="5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="4.5" y1="7.5" x2="7.5" y2="7.5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
     Notas
   </div>
-</aside>
 
-<!-- Filter Sidebar (only visible in cartera) -->
-<aside id="filter-sidebar">
-  <div class="fs-head">
-    <span class="fs-title">Filtros</span>
-    <button class="fs-reset" onclick="resetFilters()">Limpiar</button>
-  </div>
-
-  <!-- Tipo de cliente -->
-  <div class="fs-group">
-    <div class="fs-label">Tipo de cliente</div>
-    <div class="fs-chips" id="fc-tipo"></div>
-  </div>
-
-  <!-- Plan -->
-  <div class="fs-group">
-    <div class="fs-label">Plan</div>
-    <div class="fs-chips" id="fc-plan"></div>
-  </div>
-
-  <!-- Tipo de comisión -->
-  <div class="fs-group">
-    <div class="fs-label">Tipo de comisión</div>
-    <div class="fs-chips" id="fc-comision"></div>
-  </div>
-
-  <!-- Estado -->
-  <div class="fs-group">
-    <div class="fs-label">Estado</div>
-    <div class="fs-chips" id="fc-estado"></div>
-  </div>
-
-  <!-- Patrimonio -->
-  <div class="fs-group">
-    <div class="fs-label">Patrimonio mínimo</div>
-    <div class="fs-range">
-      <div class="fs-range-row">
-        <span class="fs-range-label">Mayor a:</span>
-        <span class="fs-range-val" id="pat-val">$0</span>
-      </div>
-      <input type="range" class="fs-slider" id="pat-slider" min="0" max="4500000" step="50000" value="0" oninput="updateRangeFilter('patrimonio',this.value)">
+  <!-- FILTER SECTION — visible only in cartera view -->
+  <div id="filter-sidebar">
+    <div class="fs-divider" style="margin-top:8px"></div>
+    <div class="fs-head">
+      <span class="fs-title">Filtros de cartera</span>
+      <button class="fs-reset" onclick="resetFilters()">Limpiar</button>
     </div>
-  </div>
 
-  <!-- Facturación MTD -->
-  <div class="fs-group">
-    <div class="fs-label">Facturación MTD mínima</div>
-    <div class="fs-range">
-      <div class="fs-range-row">
-        <span class="fs-range-label">Mayor a:</span>
-        <span class="fs-range-val" id="fact-val">$0</span>
-      </div>
-      <input type="range" class="fs-slider" id="fact-slider" min="0" max="50000" step="1000" value="0" oninput="updateRangeFilter('facturacion',this.value)">
+    <div class="fs-group">
+      <div class="fs-label">Tipo de cliente</div>
+      <div class="fs-chips" id="fc-tipo"></div>
     </div>
-  </div>
 
-  <!-- Fee % -->
-  <div class="fs-group">
-    <div class="fs-label">Fee % máximo</div>
-    <div class="fs-range">
-      <div class="fs-range-row">
-        <span class="fs-range-label">Menor a:</span>
-        <span class="fs-range-val" id="fee-val">100%</span>
-      </div>
-      <input type="range" class="fs-slider" id="fee-slider" min="0" max="100" step="1" value="100" oninput="updateRangeFilter('fee',this.value)">
+    <div class="fs-group">
+      <div class="fs-label">Plan</div>
+      <div class="fs-chips" id="fc-plan"></div>
     </div>
-  </div>
 
+    <div class="fs-group">
+      <div class="fs-label">Comisión</div>
+      <div class="fs-chips" id="fc-comision"></div>
+    </div>
+
+    <div class="fs-group">
+      <div class="fs-label">Estado</div>
+      <div class="fs-chips" id="fc-estado"></div>
+    </div>
+
+    <div class="fs-group">
+      <div class="fs-label">Patrimonio &gt;</div>
+      <div class="fs-range">
+        <div class="fs-range-row">
+          <span class="fs-range-label">Mínimo</span>
+          <span class="fs-range-val" id="pat-val">$0</span>
+        </div>
+        <input type="range" class="fs-slider" id="pat-slider" min="0" max="4500000" step="50000" value="0" oninput="updateRangeFilter('patrimonio',this.value)">
+      </div>
+    </div>
+
+    <div class="fs-group">
+      <div class="fs-label">Facturación MTD &gt;</div>
+      <div class="fs-range">
+        <div class="fs-range-row">
+          <span class="fs-range-label">Mínima</span>
+          <span class="fs-range-val" id="fact-val">$0</span>
+        </div>
+        <input type="range" class="fs-slider" id="fact-slider" min="0" max="50000" step="1000" value="0" oninput="updateRangeFilter('facturacion',this.value)">
+      </div>
+    </div>
+
+    <div class="fs-group">
+      <div class="fs-label">Fee % &lt;</div>
+      <div class="fs-range">
+        <div class="fs-range-row">
+          <span class="fs-range-label">Máximo</span>
+          <span class="fs-range-val" id="fee-val">100%</span>
+        </div>
+        <input type="range" class="fs-slider" id="fee-slider" min="0" max="100" step="1" value="100" oninput="updateRangeFilter('fee',this.value)">
+      </div>
+    </div>
+  </div><!-- /filter-sidebar -->
 </aside>
 
 <!-- Main Content -->
@@ -688,7 +722,7 @@ tbody tr:hover td { background: var(--bg3); }
     </div>
   </div>
 
-  <!-- Main: tabla + derecha -->
+  <!-- Main: tabla full width -->
   <div class="row-main">
     <div class="panel">
       <div class="ph">
@@ -728,29 +762,6 @@ tbody tr:hover td { background: var(--bg3); }
           </thead>
           <tbody id="tbody"></tbody>
         </table>
-      </div>
-    </div>
-
-    <div class="row-right">
-      <!-- Alertas -->
-      <div class="panel">
-        <div class="ph">
-          <div class="ph-title">Alertas</div>
-          <span style="font-size:11px;color:var(--red);font-weight:600">10 activas</span>
-        </div>
-        <div class="alert-list">
-          <div class="ai" onclick="openClientById('inversores-del-sur')"><div class="adot r"></div><div style="flex:1"><div class="ai-title">Inversores Del Sur — caída -67%</div><div class="ai-sub">$6K MTD vs $18K prom. 18d sin operar.</div></div><div class="ai-time">Hoy</div></div>
-          <div class="ai" onclick="openClientById('rodriguez-p')"><div class="adot r"></div><div style="flex:1"><div class="ai-title">Rodríguez, P. — 65d sin operar</div><div class="ai-sub">Inactivo. Contacto urgente.</div></div><div class="ai-time">Hoy</div></div>
-          <div class="ai"><div class="adot r"></div><div style="flex:1"><div class="ai-title">Martínez, J. — Ejercicio de opción</div><div class="ai-sub">GGAL C7000 ABR25 — vence en 8d.</div></div><div class="ai-time">Hoy</div></div>
-          <div class="ai"><div class="adot r"></div><div style="flex:1"><div class="ai-title">García, L. — Palanca excedida 2.4x</div><div class="ai-sub">Límite regulatorio 2x. Acción requerida.</div></div><div class="ai-time">Hoy</div></div>
-          <div class="ai" onclick="openClientById('fondo-austral')"><div class="adot a"></div><div style="flex:1"><div class="ai-title">Fondo Austral — candidato Elite</div><div class="ai-sub">$3.3M patrimonio en plan Advance.</div></div><div class="ai-time">Ayer</div></div>
-          <div class="ai"><div class="adot a"></div><div style="flex:1"><div class="ai-title">Exportar S.A. — garantía pendiente</div><div class="ai-sub">Pedido $420K por op. a plazo.</div></div><div class="ai-time">Ayer</div></div>
-        </div>
-      </div>
-      <!-- Ranking -->
-      <div class="panel">
-        <div class="ph"><div class="ph-title">Ranking facturación MTD</div></div>
-        <div class="rank-list" id="rankList"></div>
       </div>
     </div>
   </div>
@@ -879,8 +890,27 @@ FCI Money Market captando flujo sostenido.</textarea></div>
 </div>
 </div>
 
-<!-- DRAWER -->
-<div id="overlay" onclick="closeDrawer()"></div>
+<!-- ALERT PANEL -->
+<div id="alert-panel">
+  <div class="ap-head">
+    <span class="ap-title">Alertas activas</span>
+    <span class="ap-close" onclick="toggleAlertPanel()">✕ Cerrar</span>
+  </div>
+  <div class="ap-list">
+    <div class="ap-item" onclick="openClientById('inversores-del-sur');toggleAlertPanel()"><div class="ap-dot r"></div><div style="flex:1"><div class="ap-title2">Inversores Del Sur — caída -67% billing</div><div class="ap-sub">$6K MTD vs $18K prom. 18d sin operar.</div></div><div class="ap-time">Hoy</div></div>
+    <div class="ap-item" onclick="openClientById('rodriguez-p');toggleAlertPanel()"><div class="ap-dot r"></div><div style="flex:1"><div class="ap-title2">Rodríguez, P. — 65d sin operación</div><div class="ap-sub">Inactivo. Contacto urgente.</div></div><div class="ap-time">Hoy</div></div>
+    <div class="ap-item"><div class="ap-dot r"></div><div style="flex:1"><div class="ap-title2">Martínez, J. — Ejercicio de opción</div><div class="ap-sub">GGAL C7000 ABR25 — vence en 8 días.</div></div><div class="ap-time">Hoy</div></div>
+    <div class="ap-item"><div class="ap-dot r"></div><div style="flex:1"><div class="ap-title2">García, L. — Palanca excedida 2.4x</div><div class="ap-sub">Límite regulatorio 2x. Requiere acción.</div></div><div class="ap-time">Hoy</div></div>
+    <div class="ap-item"><div class="ap-dot r"></div><div style="flex:1"><div class="ap-title2">Exportar S.A. — Garantía pendiente</div><div class="ap-sub">Pedido $420K por operación a plazo. Vence hoy.</div></div><div class="ap-time">Hoy</div></div>
+    <div class="ap-item" onclick="openClientById('fondo-austral');toggleAlertPanel()"><div class="ap-dot a"></div><div style="flex:1"><div class="ap-title2">Fondo Austral — candidato Elite</div><div class="ap-sub">$3.3M patrimonio en plan Advance.</div></div><div class="ap-time">Ayer</div></div>
+    <div class="ap-item"><div class="ap-dot a"></div><div style="flex:1"><div class="ap-title2">Cía. del Norte — sin contacto 38 días</div><div class="ap-sub">$1.8M patrimonio. Llamado urgente.</div></div><div class="ap-time">Ayer</div></div>
+    <div class="ap-item"><div class="ap-dot a"></div><div style="flex:1"><div class="ap-title2">López, C. — incumplimiento CNV art.17</div><div class="ap-sub">Formulario desactualizado >90 días.</div></div><div class="ap-time">Hace 2d</div></div>
+    <div class="ap-item" onclick="openClientById('rodriguez-p');toggleAlertPanel()"><div class="ap-dot a"></div><div style="flex:1"><div class="ap-title2">Rodríguez, P. — UIF declaración anual</div><div class="ap-sub">Beneficiario final pendiente.</div></div><div class="ap-time">Hace 2d</div></div>
+    <div class="ap-item"><div class="ap-dot b"></div><div style="flex:1"><div class="ap-title2">Martínez, J. — optimizar plan Variable</div><div class="ap-sub">87 ops este mes. Evaluar fee cap.</div></div><div class="ap-time">Hace 3d</div></div>
+  </div>
+</div>
+
+<!-- OVERLAY (cierra panel y drawer) -->
 <div id="drawer">
   <div class="dh">
     <div>
@@ -1328,6 +1358,20 @@ function closeDrawer() {
 }
 
 // ════════════════════════════════════════════
+// ALERT PANEL TOGGLE
+// ════════════════════════════════════════════
+function toggleAlertPanel() {
+  document.getElementById('alert-panel').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  const p = document.getElementById('alert-panel');
+  const btn = document.getElementById('bellBtn');
+  if (p && btn && p.classList.contains('open') && !p.contains(e.target) && !btn.contains(e.target)) {
+    p.classList.remove('open');
+  }
+});
+
+// ════════════════════════════════════════════
 // VIEW SWITCHER
 // ════════════════════════════════════════════
 function switchView(view, el) {
@@ -1337,9 +1381,9 @@ function switchView(view, el) {
   if(el) el.classList.add('active');
   const viewIdx={cartera:0,mercado:1,comparativo:2,riesgo:3,research:4,notas:5};
   document.querySelectorAll('.top-nav button')[viewIdx[view]]?.classList.add('active');
-  // Show/hide filter sidebar
+  // Show/hide filter section inside sidebar
   const fs = document.getElementById('filter-sidebar');
-  fs.style.display = view==='cartera' ? 'flex' : 'none';
+  if (fs) fs.style.display = view==='cartera' ? '' : 'none';
   const handlers={mercado:initMarket,comparativo:initComparativo,riesgo:initRiesgo,research:initResearch};
   if(handlers[view]) setTimeout(handlers[view],80);
 }
