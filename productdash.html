@@ -743,7 +743,6 @@ tbody tr:hover td { background: var(--bg3); }
           <thead>
             <tr>
               <th onclick="setSort('nombre')">Cliente <span class="si">↕</span></th>
-              <th onclick="setSort('asesor')">Asesor <span class="si">↕</span></th>
               <th onclick="setSort('tipo')">Tipo <span class="si">↕</span></th>
               <th onclick="setSort('plan')">Plan <span class="si">↕</span></th>
               <th onclick="setSort('fee')">Fee % <span class="si">↕</span></th>
@@ -752,12 +751,9 @@ tbody tr:hover td { background: var(--bg3); }
               <th onclick="setSort('facturacionMTD')" class="sorted">Fact. MTD <span class="si">↓</span></th>
               <th onclick="setSort('facturacionYTD')">Fact. YTD <span class="si">↕</span></th>
               <th>P&L YTD USD</th>
-              <th onclick="setSort('promFact3m')">Prom. 3m <span class="si">↕</span></th>
               <th onclick="setSort('operacionesMes')">Ops <span class="si">↕</span></th>
               <th onclick="setSort('_diasOp')">Últ. op. <span class="si">↕</span></th>
-              <th>Historial</th>
               <th onclick="setSort('estado')">Estado <span class="si">↕</span></th>
-              <th>Composición</th>
             </tr>
           </thead>
           <tbody id="tbody"></tbody>
@@ -931,18 +927,18 @@ FCI Money Market captando flujo sostenido.</textarea></div>
 const COLS = ['#39FF14','#4499FF','#FFBB00','#FF4444','#00DDAA','#CC88FF','#FF8844'];
 
 const clients = [
-  {id:'grupo-pampa',    nombre:'Grupo Pampa S.A.',   asesor:'MR',tipo:'Empresa',  plan:'Elite',   comision:'FLAT',    fee:0.20,patrimonio:4200000,facturacionMTD:48000,facturacionYTD:148000,pnlYTD_usd:28400, promFact3m:41000,operacionesMes:23,ultimaOp:'2025-03-19',estado:'Activo',   instrPrinc:['Acciones','CEDEARs','Bonos'],    histFact:[38,41,44,39,42,41,43,45,40,42,44,48],composicion:{Acciones:35,CEDEARs:30,Bonos:20,Cauciones:15},nota:''},
-  {id:'martinez-j',    nombre:'Martínez, J.',        asesor:'MR',tipo:'Trader',   plan:'Variable',comision:'Variable',fee:0.35,patrimonio:890000, facturacionMTD:31000,facturacionYTD:96000, pnlYTD_usd:11200, promFact3m:29000,operacionesMes:87,ultimaOp:'2025-03-18',estado:'Activo',   instrPrinc:['Futuros','Opciones','Acciones'],  histFact:[24,27,26,29,28,30,27,29,31,28,29,31],composicion:{Acciones:45,Futuros:30,Opciones:25},nota:''},
-  {id:'garcia-l',      nombre:'García, L.',          asesor:'MR',tipo:'Premium',  plan:'Elite',   comision:'FLAT',    fee:0.18,patrimonio:1500000,facturacionMTD:22000,facturacionYTD:68000, pnlYTD_usd:6800,  promFact3m:20000,operacionesMes:11,ultimaOp:'2025-03-16',estado:'Activo',   instrPrinc:['CEDEARs','Bonos','FCI'],         histFact:[16,18,19,20,21,20,19,22,20,21,20,22],composicion:{CEDEARs:45,Bonos:35,FCI:20},nota:''},
-  {id:'fondo-austral', nombre:'Fondo Austral',       asesor:'LP',tipo:'Pasivo',   plan:'Advance', comision:'FLAT',    fee:0.15,patrimonio:3300000,facturacionMTD:9000, facturacionYTD:36000, pnlYTD_usd:-1800, promFact3m:14000,operacionesMes:5, ultimaOp:'2025-03-11',estado:'Potencial',instrPrinc:['FCI','Cauciones','Bonos'],        histFact:[12,14,15,14,13,15,14,12,16,14,14,9], composicion:{FCI:50,Cauciones:30,Bonos:20},nota:''},
-  {id:'inversores-del-sur',nombre:'Inversores Del Sur',asesor:'MR',tipo:'Empresa',plan:'Advance',comision:'Variable',fee:0.25,patrimonio:2100000,facturacionMTD:6000, facturacionYTD:54000, pnlYTD_usd:-14200,promFact3m:18000,operacionesMes:3, ultimaOp:'2025-03-01',estado:'Riesgo',   instrPrinc:['Acciones','Bonos'],              histFact:[20,19,18,17,16,18,17,19,15,18,16,6], composicion:{Acciones:60,Bonos:40},nota:''},
-  {id:'rodriguez-p',   nombre:'Rodríguez, P.',       asesor:'AG',tipo:'Retail',   plan:'Start',   comision:'FLAT',    fee:0.30,patrimonio:210000, facturacionMTD:0,    facturacionYTD:14000, pnlYTD_usd:-2100, promFact3m:4000, operacionesMes:0, ultimaOp:'2025-01-13',estado:'Inactivo', instrPrinc:['Acciones','FCI'],                histFact:[3,4,5,4,3,4,4,3,4,3,4,0],            composicion:{Acciones:40,FCI:60},nota:''},
-  {id:'cia-del-norte', nombre:'Cía. del Norte',      asesor:'LP',tipo:'Empresa',  plan:'Advance', comision:'FLAT',    fee:0.20,patrimonio:1800000,facturacionMTD:12000,facturacionYTD:48000, pnlYTD_usd:3400,  promFact3m:15000,operacionesMes:7, ultimaOp:'2025-02-09',estado:'Potencial',instrPrinc:['Bonos','Letras','Cauciones'],     histFact:[13,15,14,15,16,14,15,14,13,15,14,12],composicion:{Bonos:40,Letras:35,Cauciones:25},nota:''},
-  {id:'fernandez-r',   nombre:'Fernández, R.',       asesor:'MR',tipo:'Activo',   plan:'Variable',comision:'Variable',fee:0.40,patrimonio:560000, facturacionMTD:18000,facturacionYTD:52000, pnlYTD_usd:9600,  promFact3m:16000,operacionesMes:42,ultimaOp:'2025-03-18',estado:'Activo',   instrPrinc:['Acciones','Opciones','CEDEARs'],  histFact:[13,14,15,16,15,16,14,17,15,16,17,18],composicion:{Acciones:50,CEDEARs:30,Opciones:20},nota:''},
-  {id:'exportar-sa',   nombre:'Exportar S.A.',       asesor:'LP',tipo:'Empresa',  plan:'Elite',   comision:'FLAT',    fee:0.18,patrimonio:2100000,facturacionMTD:15000,facturacionYTD:58000, pnlYTD_usd:1200,  promFact3m:17000,operacionesMes:9, ultimaOp:'2025-03-14',estado:'Activo',   instrPrinc:['Futuros FX','Bonos','CEDEARs'],   histFact:[14,16,17,18,16,17,16,18,17,16,17,15],composicion:{'Fut.FX':30,Bonos:35,CEDEARs:35},nota:''},
-  {id:'torres-m',      nombre:'Torres, M.',          asesor:'AG',tipo:'Premium',  plan:'Elite',   comision:'FLAT',    fee:0.18,patrimonio:980000, facturacionMTD:11000,facturacionYTD:32000, pnlYTD_usd:4100,  promFact3m:10000,operacionesMes:8, ultimaOp:'2025-03-13',estado:'Activo',   instrPrinc:['CEDEARs','Bonos'],               histFact:[8,9,10,10,9,10,9,11,10,10,10,11],    composicion:{CEDEARs:60,Bonos:40},nota:''},
-  {id:'agro-pampas',   nombre:'Agro Pampas S.A.',    asesor:'AG',tipo:'Empresa',  plan:'Advance', comision:'Variable',fee:0.22,patrimonio:1200000,facturacionMTD:8000, facturacionYTD:28000, pnlYTD_usd:-800,  promFact3m:9000, operacionesMes:4, ultimaOp:'2025-03-07',estado:'Activo',   instrPrinc:['Futuros','Bonos'],               histFact:[7,9,10,9,8,9,8,10,9,8,9,8],          composicion:{Futuros:55,Bonos:45},nota:''},
-  {id:'lopez-c',       nombre:'López, C.',           asesor:'AG',tipo:'Retail',   plan:'Start',   comision:'FLAT',    fee:0.30,patrimonio:95000,  facturacionMTD:1200, facturacionYTD:8000,  pnlYTD_usd:-600,  promFact3m:1800, operacionesMes:2, ultimaOp:'2025-02-02',estado:'Inactivo', instrPrinc:['FCI','Acciones'],                histFact:[1,2,2,1,2,2,1,2,1,2,2,1],            composicion:{FCI:70,Acciones:30},nota:''},
+  {id:'grupo-pampa',    nombre:'Grupo Pampa S.A.',   asesor:'MR',tipo:'Empresa', plan:'Elite',   comision:'FLAT',    fee:0.00,patrimonio:4200000,facturacionMTD:48000,facturacionYTD:148000,pnlYTD_usd:28400, promFact3m:41000,operacionesMes:23,ultimaOp:'2025-03-19',estado:'Activo',   instrPrinc:['Acciones','CEDEARs','Bonos'],    histFact:[38,41,44,39,42,41,43,45,40,42,44,48],composicion:{Acciones:35,CEDEARs:30,Bonos:20,Cauciones:15},nota:''},
+  {id:'martinez-j',    nombre:'Martínez, J.',        asesor:'MR',tipo:'Retail',  plan:'Variable',comision:'Variable',fee:0.15,patrimonio:890000, facturacionMTD:31000,facturacionYTD:96000, pnlYTD_usd:11200, promFact3m:29000,operacionesMes:87,ultimaOp:'2025-03-18',estado:'Activo',   instrPrinc:['Futuros','Opciones','Acciones'],  histFact:[24,27,26,29,28,30,27,29,31,28,29,31],composicion:{Acciones:45,Futuros:30,Opciones:25},nota:''},
+  {id:'garcia-l',      nombre:'García, L.',          asesor:'MR',tipo:'Retail',  plan:'Elite',   comision:'FLAT',    fee:0.00,patrimonio:1500000,facturacionMTD:22000,facturacionYTD:68000, pnlYTD_usd:6800,  promFact3m:20000,operacionesMes:11,ultimaOp:'2025-03-16',estado:'Activo',   instrPrinc:['CEDEARs','Bonos','FCI'],         histFact:[16,18,19,20,21,20,19,22,20,21,20,22],composicion:{CEDEARs:45,Bonos:35,FCI:20},nota:''},
+  {id:'fondo-austral', nombre:'Fondo Austral',       asesor:'LP',tipo:'Empresa', plan:'Advance', comision:'FLAT',    fee:0.00,patrimonio:3300000,facturacionMTD:9000, facturacionYTD:36000, pnlYTD_usd:-1800, promFact3m:14000,operacionesMes:5, ultimaOp:'2025-03-11',estado:'Potencial',instrPrinc:['FCI','Cauciones','Bonos'],        histFact:[12,14,15,14,13,15,14,12,16,14,14,9], composicion:{FCI:50,Cauciones:30,Bonos:20},nota:''},
+  {id:'inversores-del-sur',nombre:'Inversores Del Sur',asesor:'MR',tipo:'Empresa',plan:'Advance',comision:'Variable',fee:0.15,patrimonio:2100000,facturacionMTD:6000, facturacionYTD:54000, pnlYTD_usd:-14200,promFact3m:18000,operacionesMes:3, ultimaOp:'2025-03-01',estado:'Riesgo',   instrPrinc:['Acciones','Bonos'],              histFact:[20,19,18,17,16,18,17,19,15,18,16,6], composicion:{Acciones:60,Bonos:40},nota:''},
+  {id:'rodriguez-p',   nombre:'Rodríguez, P.',       asesor:'AG',tipo:'Retail',  plan:'Start',   comision:'FLAT',    fee:0.00,patrimonio:210000, facturacionMTD:0,    facturacionYTD:14000, pnlYTD_usd:-2100, promFact3m:4000, operacionesMes:0, ultimaOp:'2025-01-13',estado:'Inactivo', instrPrinc:['Acciones','FCI'],                histFact:[3,4,5,4,3,4,4,3,4,3,4,0],            composicion:{Acciones:40,FCI:60},nota:''},
+  {id:'cia-del-norte', nombre:'Cía. del Norte',      asesor:'LP',tipo:'Empresa', plan:'Advance', comision:'FLAT',    fee:0.00,patrimonio:1800000,facturacionMTD:12000,facturacionYTD:48000, pnlYTD_usd:3400,  promFact3m:15000,operacionesMes:7, ultimaOp:'2025-02-09',estado:'Potencial',instrPrinc:['Bonos','Letras','Cauciones'],     histFact:[13,15,14,15,16,14,15,14,13,15,14,12],composicion:{Bonos:40,Letras:35,Cauciones:25},nota:''},
+  {id:'fernandez-r',   nombre:'Fernández, R.',       asesor:'MR',tipo:'Retail',  plan:'Variable',comision:'Variable',fee:0.15,patrimonio:560000, facturacionMTD:18000,facturacionYTD:52000, pnlYTD_usd:9600,  promFact3m:16000,operacionesMes:42,ultimaOp:'2025-03-18',estado:'Activo',   instrPrinc:['Acciones','Opciones','CEDEARs'],  histFact:[13,14,15,16,15,16,14,17,15,16,17,18],composicion:{Acciones:50,CEDEARs:30,Opciones:20},nota:''},
+  {id:'exportar-sa',   nombre:'Exportar S.A.',       asesor:'LP',tipo:'Empresa', plan:'Elite',   comision:'FLAT',    fee:0.00,patrimonio:2100000,facturacionMTD:15000,facturacionYTD:58000, pnlYTD_usd:1200,  promFact3m:17000,operacionesMes:9, ultimaOp:'2025-03-14',estado:'Activo',   instrPrinc:['Futuros FX','Bonos','CEDEARs'],   histFact:[14,16,17,18,16,17,16,18,17,16,17,15],composicion:{'Fut.FX':30,Bonos:35,CEDEARs:35},nota:''},
+  {id:'torres-m',      nombre:'Torres, M.',          asesor:'AG',tipo:'Retail',  plan:'Elite',   comision:'FLAT',    fee:0.00,patrimonio:980000, facturacionMTD:11000,facturacionYTD:32000, pnlYTD_usd:4100,  promFact3m:10000,operacionesMes:8, ultimaOp:'2025-03-13',estado:'Activo',   instrPrinc:['CEDEARs','Bonos'],               histFact:[8,9,10,10,9,10,9,11,10,10,10,11],    composicion:{CEDEARs:60,Bonos:40},nota:''},
+  {id:'agro-pampas',   nombre:'Agro Pampas S.A.',    asesor:'AG',tipo:'Empresa', plan:'Advance', comision:'Variable',fee:0.15,patrimonio:1200000,facturacionMTD:8000, facturacionYTD:28000, pnlYTD_usd:-800,  promFact3m:9000, operacionesMes:4, ultimaOp:'2025-03-07',estado:'Activo',   instrPrinc:['Futuros','Bonos'],               histFact:[7,9,10,9,8,9,8,10,9,8,9,8],          composicion:{Futuros:55,Bonos:45},nota:''},
+  {id:'lopez-c',       nombre:'López, C.',           asesor:'AG',tipo:'Retail',  plan:'Start',   comision:'FLAT',    fee:0.00,patrimonio:95000,  facturacionMTD:1200, facturacionYTD:8000,  pnlYTD_usd:-600,  promFact3m:1800, operacionesMes:2, ultimaOp:'2025-02-02',estado:'Inactivo', instrPrinc:['FCI','Acciones'],                histFact:[1,2,2,1,2,2,1,2,1,2,2,1],            composicion:{FCI:70,Acciones:30},nota:''},
 ];
 
 const MARKET_DATA=[
@@ -1054,7 +1050,7 @@ function chartColors() {
 // FILTER SIDEBAR INIT
 // ════════════════════════════════════════════
 function buildFilterChips() {
-  const tipoOpts = [...new Set(clients.map(c=>c.tipo))];
+  const tipoOpts = ['Retail','Empresa'];
   const planOpts = ['Elite','Variable','Advance','Start'];
   const comOpts  = ['FLAT','Variable'];
   const estOpts  = ['Activo','Inactivo','Riesgo','Potencial'];
@@ -1216,7 +1212,7 @@ function renderTable(data) {
   document.getElementById('table-count').textContent = `${data.length} cliente${data.length!==1?'s':''}`;
   const tbody = document.getElementById('tbody');
   if (data.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="16" class="empty-state"><div class="e-icon">🔍</div><div class="e-msg">Ningún cliente coincide con los filtros</div><div>Ajustá los filtros de la izquierda</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="12" class="empty-state"><div class="e-icon">🔍</div><div class="e-msg">Ningún cliente coincide con los filtros</div><div>Ajustá los filtros de la izquierda</div></td></tr>`;
     document.getElementById('rankList').innerHTML = '';
     return;
   }
@@ -1225,23 +1221,20 @@ function renderTable(data) {
     const pnlCls = c.pnlYTD_usd>=0?'tn g':'tn r';
     const inactWarn = dias>=state.inactDays?`<span class="inact-warn">!</span>`:'';
     const fCls = factCls(c.facturacionMTD, c.promFact3m);
+    const feeVal = c.comision==='FLAT' ? '0.00%' : (c.fee*100).toFixed(2)+'%';
     return `<tr onclick="openClientById('${c.id}')">
       <td class="td-name">${c.nombre}</td>
-      <td style="color:var(--text2);font-weight:600;font-size:12px">${c.asesor}</td>
       <td><span class="badge bt">${c.tipo}</span></td>
       <td><span class="badge ${planBadge(c.plan)}">${c.plan}</span></td>
-      <td class="tn b" style="font-weight:600">${(c.fee*100).toFixed(2)}%</td>
+      <td class="tn b" style="font-weight:600">${feeVal}</td>
       <td><span class="badge ${c.comision==='FLAT'?'bflat':'bvar'}">${c.comision}</span></td>
       <td class="tn w">${fmtM(c.patrimonio)}</td>
       <td class="${fCls}">${fmtM(c.facturacionMTD)}</td>
       <td class="tn w">${fmtM(c.facturacionYTD)}</td>
       <td class="${pnlCls}">${fmtUSD(c.pnlYTD_usd)}</td>
-      <td class="tn m">${fmtM(c.promFact3m)}</td>
       <td class="tn m">${c.operacionesMes}</td>
       <td><div class="cc"><div class="cdot" style="background:${cdotCol(dias)}"></div><span style="color:${cdotCol(dias)};font-size:12px;font-weight:500">${fmtDias(dias)}</span>${inactWarn}</div></td>
-      <td>${spark(c.histFact)}</td>
       <td><span class="badge ${estadoBadge(c.estado)}">${c.estado}</span></td>
-      <td>${miniComp(c.composicion)}</td>
     </tr>`;
   }).join('');
   renderRanking(data);
@@ -1288,7 +1281,7 @@ function openClientById(id) {
       <div class="dk"><div class="dk-l">Fact. YTD</div><div class="dk-v">${fmtM(c.facturacionYTD)}</div></div>
       <div class="dk"><div class="dk-l">P&L YTD USD</div><div class="dk-v" style="color:${c.pnlYTD_usd>=0?'var(--accent)':'var(--red)'}">${fmtUSD(c.pnlYTD_usd)}</div></div>
       <div class="dk"><div class="dk-l">Prom. 3m</div><div class="dk-v">${fmtM(c.promFact3m)}</div></div>
-      <div class="dk"><div class="dk-l">Fee %</div><div class="dk-v" style="color:var(--blue)">${(c.fee*100).toFixed(2)}%</div></div>
+      <div class="dk"><div class="dk-l">Fee %</div><div class="dk-v" style="color:var(--blue)">${c.comision==='FLAT'?'0.00%':(c.fee*100).toFixed(2)+'%'}</div></div>
       <div class="dk"><div class="dk-l">Operaciones</div><div class="dk-v">${c.operacionesMes}</div></div>
       <div class="dk"><div class="dk-l">Últ. operación</div><div class="dk-v" style="color:${cdotCol(dias)};font-size:14px">${fmtDias(dias)}</div></div>
       <div class="dk"><div class="dk-l">Asesor</div><div class="dk-v" style="font-size:14px">${c.asesor}</div></div>
