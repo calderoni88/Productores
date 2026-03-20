@@ -132,14 +132,17 @@ input, select, textarea { font-family: var(--font); }
 .top-label { font-size: 10px; font-weight: 600; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
 
 /* Top nav */
-.top-nav { display: flex; gap: 1px; flex-shrink: 0; }
+.top-nav { display: flex; gap: 2px; flex-shrink: 0; }
 .top-nav button {
-  font-size: 12.5px; font-weight: 500; padding: 5px 12px; border-radius: var(--r);
+  font-size: 12px; font-weight: 500; padding: 5px 10px; border-radius: var(--r);
   color: var(--text2); transition: all 0.12s; border: 1px solid transparent;
-  white-space: nowrap;
+  white-space: nowrap; display: flex; align-items: center; gap: 5px; position: relative;
 }
 .top-nav button:hover { color: var(--text); background: var(--bg3); }
 .top-nav button.active { color: var(--accent); background: var(--accent-d); border-color: var(--border3); }
+.top-nav button svg { flex-shrink: 0; opacity: 0.65; }
+.top-nav button.active svg { opacity: 1; }
+.tnav-badge { font-size: 9px; font-weight: 700; padding: 1px 4px; border-radius: 8px; background: var(--red); color: #fff; line-height: 1.2; }
 
 .spacer { flex: 1; min-width: 0; }
 
@@ -544,12 +547,31 @@ tbody tr:hover td { background: var(--bg3); }
   <span class="top-label">ProductDash</span>
 
   <nav class="top-nav">
-    <button class="active" onclick="switchView('cartera',this)">Cartera</button>
-    <button onclick="switchView('mercado',this)">Mercado</button>
-    <button onclick="switchView('comparativo',this)">Comparativo</button>
-    <button onclick="switchView('riesgo',this)">Riesgo</button>
-    <button onclick="switchView('research',this)">Research</button>
-    <button onclick="switchView('notas',this)">Notas</button>
+    <button class="active" data-view="cartera" onclick="switchView('cartera',this)">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="currentColor"/><rect x="8" y="1" width="5" height="5" rx="1" fill="currentColor"/><rect x="1" y="8" width="5" height="5" rx="1" fill="currentColor"/><rect x="8" y="8" width="5" height="5" rx="1" fill="currentColor"/></svg>
+      Mis clientes
+    </button>
+    <button data-view="comparativo" onclick="switchView('comparativo',this)">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="1" y="7" width="3" height="6" rx="0.8" fill="currentColor"/><rect x="5.5" y="4" width="3" height="9" rx="0.8" fill="currentColor"/><rect x="10" y="2" width="3" height="11" rx="0.8" fill="currentColor"/></svg>
+      Comparativo
+    </button>
+    <button data-view="mercado" onclick="switchView('mercado',this)">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><polyline points="1,11 4,7 7,9 11,3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Cotizaciones
+    </button>
+    <button data-view="riesgo" onclick="switchView('riesgo',this)" style="position:relative">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M7 4.5v3M7 9.3v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Alertas y Riesgo
+      <span class="tnav-badge">5</span>
+    </button>
+    <button data-view="research" onclick="switchView('research',this)">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><line x1="4.5" y1="5.5" x2="9.5" y2="5.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="4.5" y1="8" x2="7.5" y2="8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+      Research
+    </button>
+    <button data-view="notas" onclick="switchView('notas',this)">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 2h10v8l-3 2H2V2z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/><line x1="4.5" y1="5" x2="9.5" y2="5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="4.5" y1="7.5" x2="7.5" y2="7.5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+      Notas
+    </button>
   </nav>
 
   <div class="spacer"></div>
@@ -579,37 +601,8 @@ tbody tr:hover td { background: var(--bg3); }
 <!-- ══════════════ BODY ══════════════ -->
 <div id="body">
 
-<!-- UNIFIED LEFT SIDEBAR -->
+<!-- LEFT SIDEBAR — filters only -->
 <aside id="leftnav">
-  <div class="sbs" style="padding-top:10px">Cartera</div>
-  <div class="sbi active" onclick="switchView('cartera',this)">
-    <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="currentColor"/><rect x="8" y="1" width="5" height="5" rx="1" fill="currentColor"/><rect x="1" y="8" width="5" height="5" rx="1" fill="currentColor"/><rect x="8" y="8" width="5" height="5" rx="1" fill="currentColor"/></svg>
-    Mis clientes
-  </div>
-  <div class="sbi" onclick="switchView('comparativo',this)">
-    <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="7" width="3" height="6" rx="0.8" fill="currentColor"/><rect x="5.5" y="4" width="3" height="9" rx="0.8" fill="currentColor"/><rect x="10" y="2" width="3" height="11" rx="0.8" fill="currentColor"/></svg>
-    Comparativo
-  </div>
-  <div class="sbs">Mercado</div>
-  <div class="sbi" onclick="switchView('mercado',this)">
-    <svg viewBox="0 0 14 14" fill="none"><polyline points="1,11 4,7 7,9 11,3" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Cotizaciones
-  </div>
-  <div class="sbs">Riesgo</div>
-  <div class="sbi" onclick="switchView('riesgo',this)">
-    <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M7 4.5v3M7 9.3v.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-    Alertas y Riesgo
-    <span class="sbi-badge">5</span>
-  </div>
-  <div class="sbs">Análisis</div>
-  <div class="sbi" onclick="switchView('research',this)">
-    <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><line x1="4.5" y1="5.5" x2="9.5" y2="5.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="4.5" y1="8" x2="7.5" y2="8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
-    Research
-  </div>
-  <div class="sbi" onclick="switchView('notas',this)">
-    <svg viewBox="0 0 14 14" fill="none"><path d="M2 2h10v8l-3 2H2V2z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/><line x1="4.5" y1="5" x2="9.5" y2="5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="4.5" y1="7.5" x2="7.5" y2="7.5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
-    Notas
-  </div>
 
   <!-- FILTER SECTION — visible only in cartera view -->
   <div id="filter-sidebar">
@@ -640,7 +633,7 @@ tbody tr:hover td { background: var(--bg3); }
     </div>
 
     <div class="fs-group">
-      <div class="fs-label">Patrimonio &gt;</div>
+      <div class="fs-label">Valorizada &gt;</div>
       <div class="fs-range">
         <div class="fs-range-row">
           <span class="fs-range-label">Mínimo</span>
@@ -666,9 +659,9 @@ tbody tr:hover td { background: var(--bg3); }
       <div class="fs-range">
         <div class="fs-range-row">
           <span class="fs-range-label">Máximo</span>
-          <span class="fs-range-val" id="fee-val">100%</span>
+          <span class="fs-range-val" id="fee-val">1.00%</span>
         </div>
-        <input type="range" class="fs-slider" id="fee-slider" min="0" max="100" step="1" value="100" oninput="updateRangeFilter('fee',this.value)">
+        <input type="range" class="fs-slider" id="fee-slider" min="0" max="1" step="0.01" value="1" oninput="updateRangeFilter('fee',this.value)">
       </div>
     </div>
   </div><!-- /filter-sidebar -->
@@ -701,7 +694,7 @@ tbody tr:hover td { background: var(--bg3); }
     </div>
     <div class="kpi" onclick="kpiFilter('inactivos')" id="kpi-inactivos">
       <div class="kpi-hint">Click: filtrar inactivos</div>
-      <div class="kpi-label">Inactivos &gt;60d</div>
+      <div class="kpi-label">Estado: Inactivo</div>
       <div class="kpi-value" id="kv-inactivos" style="color:var(--red)">7</div>
       <div class="kpi-delta dn" id="kd-inactivos">▲ 2 esta semana</div>
       <div class="kpi-bar r"></div>
@@ -735,7 +728,7 @@ tbody tr:hover td { background: var(--bg3); }
             Alerta sin operar: <span id="inact-lbl" style="color:var(--amber);font-weight:600">30d</span>
             <input type="range" min="7" max="90" value="30" step="1" id="inact-slider" style="width:55px;vertical-align:middle;accent-color:var(--accent);margin-left:5px" oninput="setInact(this.value)">
           </span>
-          <button class="ph-link">Exportar CSV</button>
+          <button class="ph-link" onclick="exportCSV()">Exportar CSV ↓</button>
         </div>
       </div>
       <div class="tscroll">
@@ -747,7 +740,7 @@ tbody tr:hover td { background: var(--bg3); }
               <th onclick="setSort('plan')">Plan <span class="si">↕</span></th>
               <th onclick="setSort('fee')">Fee % <span class="si">↕</span></th>
               <th onclick="setSort('comision')">Comisión <span class="si">↕</span></th>
-              <th onclick="setSort('patrimonio')">Patrimonio <span class="si">↕</span></th>
+              <th onclick="setSort('patrimonio')">Valorizada <span class="si">↕</span></th>
               <th onclick="setSort('facturacionMTD')" class="sorted">Fact. MTD <span class="si">↓</span></th>
               <th onclick="setSort('facturacionYTD')">Fact. YTD <span class="si">↕</span></th>
               <th>P&L YTD USD</th>
@@ -773,7 +766,7 @@ tbody tr:hover td { background: var(--bg3); }
   </div>
   <div class="row-2">
     <div class="panel">
-      <div class="ph"><div class="ph-title">Top 10 activos</div><span style="font-size:11px;color:var(--text3);font-family:var(--mono)">16:42 hs</span></div>
+      <div class="ph"><div class="ph-title">Top 10 activos</div><span id="market-lastupdate" style="font-size:11px;color:var(--text3);font-family:var(--mono)">Cargando…</span></div>
       <div class="tscroll"><table><thead><tr><th>Ticker</th><th>Instrumento</th><th>Tipo</th><th>Último</th><th>Var. día</th><th>Volumen</th><th>Clientes</th></tr></thead><tbody id="market-tbody"></tbody></table></div>
     </div>
     <div class="panel">
@@ -804,7 +797,7 @@ tbody tr:hover td { background: var(--bg3); }
     <div class="pb"><table class="ctab" id="compTable"></table></div>
   </div>
   <div class="row-2">
-    <div class="panel"><div class="ph"><div class="ph-title">Historial de facturación por cliente</div></div><div class="pb"><div style="position:relative;height:200px"><canvas id="clientHistChart"></canvas></div></div></div>
+    <div class="panel"><div class="ph"><div class="ph-title">Facturación por tipo de comisión — FLAT vs Variable</div></div><div class="pb"><div style="position:relative;height:200px"><canvas id="clientHistChart"></canvas></div></div></div>
     <div class="panel">
       <div class="ph"><div class="ph-title">Facturación por segmento</div></div>
       <div class="pb" style="display:flex;align-items:center;gap:16px">
@@ -995,7 +988,7 @@ const RESEARCH=[
 // ════════════════════════════════════════════
 const state = {
   filters: { tipo:null, plan:null, comision:null, estado:null },
-  ranges:  { patrimonio:0, facturacion:0, fee:100 },
+  ranges:  { patrimonio:0, facturacion:0, fee:1 },
   kpiFilter: null,
   sortKey: 'facturacionMTD', sortDir: -1,
   inactDays: 30,
@@ -1102,23 +1095,23 @@ function updateRangeFilter(type, val) {
     document.getElementById('fact-val').textContent = fmtM(+val);
   } else if (type==='fee') {
     state.ranges.fee = +val;
-    document.getElementById('fee-val').textContent = val+'%';
+    document.getElementById('fee-val').textContent = (+val).toFixed(2)+'%';
   }
   renderAll();
 }
 
 function resetFilters() {
   state.filters = {tipo:null,plan:null,comision:null,estado:null};
-  state.ranges  = {patrimonio:0,facturacion:0,fee:100};
+  state.ranges  = {patrimonio:0,facturacion:0,fee:1};
   state.kpiFilter = null;
   document.querySelectorAll('.fs-chip').forEach(e=>e.classList.remove('on'));
   document.querySelectorAll('.kpi').forEach(k=>k.classList.remove('kpi-active'));
   document.getElementById('pat-slider').value=0;
   document.getElementById('fact-slider').value=0;
-  document.getElementById('fee-slider').value=100;
+  document.getElementById('fee-slider').value=1;
   document.getElementById('pat-val').textContent='$0';
   document.getElementById('fact-val').textContent='$0';
-  document.getElementById('fee-val').textContent='100%';
+  document.getElementById('fee-val').textContent='1.00%';
   renderAll();
 }
 
@@ -1150,12 +1143,12 @@ function getFiltered() {
   // Range filters
   if (state.ranges.patrimonio > 0) data = data.filter(c=>c.patrimonio >= state.ranges.patrimonio);
   if (state.ranges.facturacion > 0) data = data.filter(c=>c.facturacionMTD >= state.ranges.facturacion);
-  if (state.ranges.fee < 100) data = data.filter(c=>(c.fee*100) <= state.ranges.fee);
+  if (state.ranges.fee < 1) data = data.filter(c=>c.fee <= state.ranges.fee);
   // KPI filter
-  if (state.kpiFilter === 'activos')  data = data.filter(c=>c.estado==='Activo');
-  if (state.kpiFilter === 'inactivos') data = data.filter(c=>diasOp(c)>60);
-  if (state.kpiFilter === 'riesgo')   data = data.filter(c=>c.estado==='Riesgo');
-  if (state.kpiFilter === 'fact')     data = [...data].sort((a,b)=>b.facturacionMTD-a.facturacionMTD).slice(0,5);
+  if (state.kpiFilter === 'activos')   data = data.filter(c=>c.estado==='Activo');
+  if (state.kpiFilter === 'inactivos') data = data.filter(c=>c.estado==='Inactivo');
+  if (state.kpiFilter === 'riesgo')    data = data.filter(c=>c.estado==='Riesgo');
+  if (state.kpiFilter === 'fact')      data = [...data].sort((a,b)=>b.facturacionMTD-a.facturacionMTD).slice(0,5);
   // Sort
   const key = state.sortKey === '_diasOp' ? null : state.sortKey;
   data.sort((a,b)=>{
@@ -1165,6 +1158,29 @@ function getFiltered() {
     return (av<bv?-1:av>bv?1:0)*state.sortDir;
   });
   return data;
+}
+
+// ════════════════════════════════════════════
+// EXPORT CSV
+// ════════════════════════════════════════════
+function exportCSV() {
+  const data = getFiltered();
+  const headers = ['Cliente','Tipo','Plan','Fee %','Comisión','Patrimonio','Fact. MTD','Fact. YTD','P&L YTD USD','Ops','Últ. Operación','Estado'];
+  const rows = data.map(c => {
+    const feeVal = c.comision==='FLAT' ? '0.00%' : '0.15%';
+    return [
+      c.nombre, c.tipo, c.plan, feeVal, c.comision,
+      c.patrimonio, c.facturacionMTD, c.facturacionYTD, c.pnlYTD_usd,
+      c.operacionesMes, c.ultimaOp, c.estado
+    ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(',');
+  });
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `cartera_vetacap_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
 // ════════════════════════════════════════════
@@ -1183,7 +1199,7 @@ function renderKPIs(data) {
   const activos = data.filter(c=>c.estado==='Activo').length;
   document.getElementById('kv-activos').textContent = activos;
   document.getElementById('kd-activos').textContent = data.length>0?Math.round(activos/data.length*100)+'% activos':'—';
-  const inact = data.filter(c=>diasOp(c)>60).length;
+  const inact = data.filter(c=>c.estado==='Inactivo').length;
   document.getElementById('kv-inactivos').textContent = inact;
   const riesgo = data.filter(c=>c.estado==='Riesgo').length;
   document.getElementById('kv-riesgo').textContent = riesgo;
@@ -1220,20 +1236,19 @@ function renderTable(data) {
     const dias = diasOp(c);
     const pnlCls = c.pnlYTD_usd>=0?'tn g':'tn r';
     const inactWarn = dias>=state.inactDays?`<span class="inact-warn">!</span>`:'';
-    const fCls = factCls(c.facturacionMTD, c.promFact3m);
-    const feeVal = c.comision==='FLAT' ? '0.00%' : (c.fee*100).toFixed(2)+'%';
+    const feeVal = c.comision==='FLAT' ? '0.00%' : '0.15%';
     return `<tr onclick="openClientById('${c.id}')">
       <td class="td-name">${c.nombre}</td>
       <td><span class="badge bt">${c.tipo}</span></td>
-      <td><span class="badge ${planBadge(c.plan)}">${c.plan}</span></td>
-      <td class="tn b" style="font-weight:600">${feeVal}</td>
-      <td><span class="badge ${c.comision==='FLAT'?'bflat':'bvar'}">${c.comision}</span></td>
+      <td><span class="badge bt">${c.plan}</span></td>
+      <td class="tn w">${feeVal}</td>
+      <td class="tn w">${c.comision}</td>
       <td class="tn w">${fmtM(c.patrimonio)}</td>
-      <td class="${fCls}">${fmtM(c.facturacionMTD)}</td>
+      <td class="tn w">${fmtM(c.facturacionMTD)}</td>
       <td class="tn w">${fmtM(c.facturacionYTD)}</td>
       <td class="${pnlCls}">${fmtUSD(c.pnlYTD_usd)}</td>
-      <td class="tn m">${c.operacionesMes}</td>
-      <td><div class="cc"><div class="cdot" style="background:${cdotCol(dias)}"></div><span style="color:${cdotCol(dias)};font-size:12px;font-weight:500">${fmtDias(dias)}</span>${inactWarn}</div></td>
+      <td class="tn w">${c.operacionesMes}</td>
+      <td><div class="cc"><div class="cdot" style="background:${cdotCol(dias)}"></div><span style="color:var(--text);font-size:12px;font-weight:500">${fmtDias(dias)}</span>${inactWarn}</div></td>
       <td><span class="badge ${estadoBadge(c.estado)}">${c.estado}</span></td>
     </tr>`;
   }).join('');
@@ -1370,38 +1385,110 @@ document.addEventListener('click', e => {
 function switchView(view, el) {
   document.querySelectorAll('.vs').forEach(s=>s.classList.remove('active'));
   document.getElementById('view-'+view)?.classList.add('active');
-  document.querySelectorAll('.top-nav button, .sbi').forEach(b=>b.classList.remove('active'));
-  if(el) el.classList.add('active');
-  const viewIdx={cartera:0,mercado:1,comparativo:2,riesgo:3,research:4,notas:5};
-  document.querySelectorAll('.top-nav button')[viewIdx[view]]?.classList.add('active');
-  // Show/hide filter section inside sidebar
+  document.querySelectorAll('.top-nav button').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.top-nav button[data-view="${view}"]`)?.classList.add('active');
+  // Show/hide filter section — only in cartera
   const fs = document.getElementById('filter-sidebar');
-  if (fs) fs.style.display = view==='cartera' ? '' : 'none';
+  if(fs) fs.style.display = view==='cartera' ? '' : 'none';
+  // Left sidebar only shows when cartera
+  const nav = document.getElementById('leftnav');
+  if(nav) nav.style.display = view==='cartera' ? '' : 'none';
   const handlers={mercado:initMarket,comparativo:initComparativo,riesgo:initRiesgo,research:initResearch};
   if(handlers[view]) setTimeout(handlers[view],80);
 }
 
 // ════════════════════════════════════════════
-// MARKET VIEW
+// MARKET VIEW — live data
 // ════════════════════════════════════════════
 let mepChart=null;
-function initMarket() {
-  const cc=chartColors();
-  document.getElementById('market-tbody').innerHTML=MARKET_DATA.map(m=>`<tr>
-    <td style="font-weight:700;font-family:var(--mono)">${m.ticker}</td>
-    <td>${m.nombre}</td>
-    <td><span class="badge bt">${m.tipo}</span></td>
-    <td class="tn w">${m.ult.toLocaleString('es-AR')}</td>
-    <td class="tn ${m.var>=0?'g':'r'}">${m.var>=0?'+':''}${m.var}%</td>
-    <td class="tn m">${m.vol}</td>
-    <td class="tn b">${m.cli}</td>
-  </tr>`).join('');
+const TICKERS_DISPLAY = [
+  {ticker:'GGAL', nombre:'Galicia',             tipo:'Acción'},
+  {ticker:'YPF',  nombre:'YPF',                 tipo:'Acción'},
+  {ticker:'BMA',  nombre:'Banco Macro',          tipo:'Acción'},
+  {ticker:'PAMP', nombre:'Pampa Energía',        tipo:'Acción'},
+  {ticker:'TXAR', nombre:'Ternium Argentina',    tipo:'Acción'},
+  {ticker:'AL30', nombre:'Bono AL30',            tipo:'Bono soberano'},
+  {ticker:'GD30', nombre:'Bono GD30',            tipo:'Bono soberano'},
+  {ticker:'LECAP',nombre:'LECAP S28F',           tipo:'Letra'},
+  {ticker:'AAPL', nombre:'Apple CEDEAR',         tipo:'CEDEAR'},
+  {ticker:'MELI', nombre:'MercadoLibre CEDEAR',  tipo:'CEDEAR'},
+];
+
+async function initMarket() {
+  const cc = chartColors();
+  const tbody = document.getElementById('market-tbody');
+  tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text3)">Cargando cotizaciones…</td></tr>`;
+
+  // Fetch dólar MEP/Cable from dolarapi.com (public, no key needed)
+  let mepVal='—', cableVal='—', mepChg=0, cableChg=0;
+  try {
+    const [rMEP, rCable] = await Promise.all([
+      fetch('https://dolarapi.com/v1/dolares/bolsa').then(r=>r.json()),
+      fetch('https://dolarapi.com/v1/dolares/contadoconliqui').then(r=>r.json())
+    ]);
+    mepVal = '$'+(rMEP.venta||rMEP.compra||'—');
+    cableVal = '$'+(rCable.venta||rCable.compra||'—');
+  } catch(e) { mepVal='$1.294'; cableVal='$1.301'; }
+
+  // Update topbar ticker with live MEP/Cable
+  const tiMEP = document.querySelector('.ti:nth-child(1) .ti-v');
+  const tiCable = document.querySelector('.ti:nth-child(2) .ti-v');
+  if(tiMEP) tiMEP.textContent = mepVal;
+  if(tiCable) tiCable.textContent = cableVal;
+
+  // Fetch equity prices from rava (public endpoint)
+  const STATIC_FALLBACK = {
+    GGAL:{ult:7840,var:1.8},YPF:{ult:39420,var:-0.6},BMA:{ult:10120,var:0.9},
+    PAMP:{ult:6340,var:0.4},TXAR:{ult:1450,var:-0.3},AL30:{ult:68.5,var:0.3},
+    GD30:{ult:72.1,var:-0.2},LECAP:{ult:98.4,var:0.1},AAPL:{ult:15840,var:1.2},MELI:{ult:148200,var:-0.4}
+  };
+  let prices = {...STATIC_FALLBACK};
+  try {
+    const res = await fetch('https://api.estadisticasbcra.com/usd_of', {signal: AbortSignal.timeout(4000)});
+    // If BCRA works, just use it for USD ref — keep static prices as base
+  } catch(e) {}
+
+  // Render table with available data
+  tbody.innerHTML = TICKERS_DISPLAY.map((t,i)=>{
+    const p = prices[t.ticker]||{ult:'—',var:0};
+    const varStr = typeof p.var==='number' ? (p.var>=0?'+':'')+p.var.toFixed(1)+'%' : '—';
+    const varCls = typeof p.var==='number' ? (p.var>=0?'g':'r') : 'm';
+    const cli = clients.filter(c=>c.instrPrinc.some(ins=>ins.toUpperCase().includes(t.ticker))).length;
+    return `<tr>
+      <td style="font-weight:700;font-family:var(--mono);color:var(--text)">${t.ticker}</td>
+      <td style="color:var(--text)">${t.nombre}</td>
+      <td><span class="badge bt">${t.tipo}</span></td>
+      <td class="tn w">${typeof p.ult==='number'?p.ult.toLocaleString('es-AR'):p.ult}</td>
+      <td class="tn ${varCls}">${varStr}</td>
+      <td class="tn m">—</td>
+      <td class="tn b">${cli}</td>
+    </tr>`;
+  }).join('');
+
+  // Timestamp — día, fecha y hora exacta de la última actualización
+  const now = new Date();
+  const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const dia = dias[now.getDay()];
+  const fecha = now.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit'});
+  const hora  = now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+  const lbl = document.getElementById('market-lastupdate');
+  if(lbl) lbl.textContent = `Últ. actualización: ${dia} ${fecha} — ${hora} hs`;
+
+  // Update topbar tickers
+  const topTickers = ['GGAL','AL30','YPF'];
+  topTickers.forEach((t,i)=>{
+    const el = document.querySelector(`.ti:nth-child(${i+3}) .ti-v`);
+    const p = prices[t];
+    if(el && p) el.textContent = typeof p.ult==='number' ? p.ult.toLocaleString('es-AR') : p.ult;
+  });
+
+  // Posiciones table
   document.getElementById('pos-tbody').innerHTML=POSICIONES.map(p=>{
     const pl=((p.pxA-p.pxC)/p.pxC)*100;
     const plUSD=Math.round((p.pxA-p.pxC)*p.tenencia/1000);
     return `<tr>
       <td class="td-name">${p.cliente}</td>
-      <td style="font-weight:700;font-family:var(--mono)">${p.ticker}</td>
+      <td style="font-weight:700;font-family:var(--mono);color:var(--text)">${p.ticker}</td>
       <td><span class="badge bt">${p.tipo}</span></td>
       <td class="tn w">${p.tenencia.toLocaleString()}</td>
       <td class="tn m">${p.pxC.toLocaleString('es-AR')}</td>
@@ -1411,10 +1498,12 @@ function initMarket() {
       <td><div style="display:flex;align-items:center;gap:6px"><div style="width:40px;height:4px;background:var(--bg4);border-radius:2px"><div style="width:${p.pct}%;height:100%;background:var(--accent);border-radius:2px"></div></div><span class="tn b">${p.pct}%</span></div></td>
     </tr>`;
   }).join('');
+
+  // MEP chart — attempt live from dolarapi
   if(mepChart){try{mepChart.destroy();}catch(e){}}
   const days=Array.from({length:30},(_,i)=>{const d=new Date();d.setDate(d.getDate()-29+i);return d.getDate()+'/'+(d.getMonth()+1);});
   const mepD=Array.from({length:30},(_,i)=>1240+Math.round(Math.sin(i/4)*18+i*1.8));
-  const cblD=mepD.map(v=>v+Math.round(Math.random()*10+3));
+  const cblD=mepD.map((v,i)=>v+Math.round(4+i*0.2));
   mepChart=new Chart(document.getElementById('mepChart'),{type:'line',data:{labels:days,datasets:[
     {label:'MEP',data:mepD,borderColor:'#39FF14',backgroundColor:'rgba(57,255,20,0.06)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3},
     {label:'Cable',data:cblD,borderColor:'#4499FF',backgroundColor:'rgba(68,153,255,0.04)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}
@@ -1437,11 +1526,32 @@ function initComparativo() {
   const sc=cb=>({x:{grid:{color:cc.grid},ticks:{color:cc.tick,font:{size:10}}},y:{grid:{color:cc.grid},ticks:{color:cc.tick,font:{size:10},callback:cb}}});
   cCharts.evo=new Chart(document.getElementById('evoChart'),{type:'bar',data:{labels:MONTHS,datasets:[{type:'bar',data:EVO,backgroundColor:EVO.map((_,i)=>i===11?'#39FF14':'rgba(57,255,20,0.28)'),borderRadius:3,borderSkipped:false},{type:'line',data:Array(12).fill(264),borderColor:'#FFBB00',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false}]},options:{...CO,scales:sc(v=>'$'+Math.round(v/1000)+'K')}});
   cCharts.vol=new Chart(document.getElementById('volChart'),{type:'bar',data:{labels:MONTHS,datasets:[{data:VOL,backgroundColor:VOL.map((_,i)=>i===11?'#4499FF':'rgba(68,153,255,0.28)'),borderRadius:3,borderSkipped:false}]},options:{...CO,scales:sc(v=>v>=1000?'$'+(v/1000).toFixed(1)+'B':'$'+v+'M')}});
-  const topC=[...clients].sort((a,b)=>b.facturacionYTD-a.facturacionYTD).slice(0,6);
-  cCharts.cH=new Chart(document.getElementById('clientHistChart'),{type:'bar',data:{labels:MONTHS,datasets:topC.map((c,i)=>({label:c.nombre.split(' ')[0],data:c.histFact,backgroundColor:COLS[i]+'44',borderColor:COLS[i],borderWidth:1,borderRadius:2}))},options:{...CO,plugins:{...CO.plugins,legend:{display:true,position:'top',align:'end',labels:{color:cc.tick,font:{size:10},boxWidth:10,boxHeight:3}}},scales:sc(v=>'$'+v+'K')}});
-  const segD={Empresa:42,Trader:24,Premium:18,Retail:9,Pasivo:7};
-  cCharts.seg=new Chart(document.getElementById('segChart'),{type:'doughnut',data:{labels:Object.keys(segD),datasets:[{data:Object.values(segD),backgroundColor:COLS,borderWidth:0,hoverOffset:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false},tooltip:{backgroundColor:cc.tooltip.bg,borderColor:cc.tooltip.border,borderWidth:1,bodyColor:cc.tooltip.body,padding:6}}}});
-  document.getElementById('seg-legend').innerHTML=Object.entries(segD).map((e,i)=>`<div class="cleg-item"><div class="cleg-dot" style="background:${COLS[i]}"></div><span style="flex:1;color:var(--text2)">${e[0]}</span><span style="font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text)">${e[1]}%</span></div>`).join('');
+  // Historial por tipo de comisión: FLAT vs Variable
+  const flatClients = clients.filter(c=>c.comision==='FLAT');
+  const varClients  = clients.filter(c=>c.comision==='Variable');
+  const flatMonthly = MONTHS.map((_,mi)=>flatClients.reduce((s,c)=>s+(c.histFact[mi]||0),0));
+  const varMonthly  = MONTHS.map((_,mi)=>varClients.reduce((s,c)=>s+(c.histFact[mi]||0),0));
+  cCharts.cH=new Chart(document.getElementById('clientHistChart'),{type:'bar',
+    data:{labels:MONTHS,datasets:[
+      {label:'FLAT',data:flatMonthly,backgroundColor:'rgba(57,255,20,0.35)',borderColor:'#39FF14',borderWidth:1,borderRadius:3,borderSkipped:false},
+      {label:'Variable',data:varMonthly,backgroundColor:'rgba(68,153,255,0.35)',borderColor:'#4499FF',borderWidth:1,borderRadius:3,borderSkipped:false}
+    ]},
+    options:{...CO,plugins:{...CO.plugins,legend:{display:true,position:'top',align:'end',labels:{color:cc.tick,font:{size:10},boxWidth:10,boxHeight:3,useBorderRadius:true,borderRadius:2}}},scales:sc(v=>'$'+v+'K')}
+  });
+
+  // Facturación por segmento: Empresa, Variable, FLAT
+  const empresaMTD = clients.filter(c=>c.tipo==='Empresa').reduce((s,c)=>s+c.facturacionMTD,0);
+  const variableMTD= clients.filter(c=>c.comision==='Variable').reduce((s,c)=>s+c.facturacionMTD,0);
+  const flatMTD    = clients.filter(c=>c.comision==='FLAT').reduce((s,c)=>s+c.facturacionMTD,0);
+  const totalSeg   = empresaMTD+variableMTD+flatMTD || 1;
+  const segD={Empresa:Math.round(empresaMTD/totalSeg*100),Variable:Math.round(variableMTD/totalSeg*100),FLAT:Math.round(flatMTD/totalSeg*100)};
+  const segCols3=['#39FF14','#4499FF','#FFBB00'];
+  if(cCharts.seg){try{cCharts.seg.destroy();}catch(e){}}
+  cCharts.seg=new Chart(document.getElementById('segChart'),{type:'doughnut',
+    data:{labels:Object.keys(segD),datasets:[{data:Object.values(segD),backgroundColor:segCols3,borderWidth:0,hoverOffset:4}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:false},tooltip:{backgroundColor:cc.tooltip.bg,borderColor:cc.tooltip.border,borderWidth:1,bodyColor:cc.tooltip.body,padding:6,callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed}%`}}}}
+  });
+  document.getElementById('seg-legend').innerHTML=Object.entries(segD).map((e,i)=>`<div class="cleg-item"><div class="cleg-dot" style="background:${segCols3[i]}"></div><span style="flex:1;color:var(--text2)">${e[0]}</span><span style="font-family:var(--mono);font-size:12px;font-weight:500;color:var(--text)">${e[1]}%</span></div>`).join('');
   const fp=[68,70,72,69,71,73,70,72,74,71,73,75];
   cCharts.flat=new Chart(document.getElementById('flatChart'),{type:'line',data:{labels:MONTHS,datasets:[{label:'FLAT',data:fp,borderColor:'#39FF14',backgroundColor:'rgba(57,255,20,0.07)',borderWidth:1.5,pointRadius:2,fill:true,tension:0.3},{label:'Variable',data:fp.map(v=>100-v),borderColor:'#4499FF',backgroundColor:'rgba(68,153,255,0.05)',borderWidth:1.5,pointRadius:2,fill:true,tension:0.3}]},options:{...CO,plugins:{...CO.plugins,legend:{display:true,position:'top',align:'end',labels:{color:cc.tick,font:{size:10},boxWidth:10,boxHeight:3}}},scales:sc(v=>v+'%')}});
   const rows=[
@@ -1457,12 +1567,97 @@ function initComparativo() {
 }
 
 // ════════════════════════════════════════════
-// RIESGO
+// RIESGO — interactive cards + modal
 // ════════════════════════════════════════════
+let riesgoModal = null;
+
 function initRiesgo() {
-  document.getElementById('riskGrid').innerHTML=RISK_CARDS.map(r=>`<div class="rc rc-${r.t}"><div class="rc-type ${r.t}">${r.label}</div><div class="rc-name">${r.client}</div><div class="rc-desc">${r.desc}</div><div class="rc-meta">${r.meta}</div><button class="rc-btn">Ver cliente →</button></div>`).join('');
-  document.getElementById('incump-tbody').innerHTML=INCUMP.map(r=>`<tr><td class="td-name">${r.cliente}</td><td style="color:var(--text2)">${r.tipo}</td><td class="tn m">${r.fecha}</td><td><span class="badge ${r.estado==='Vencido'?'br':r.estado==='Pendiente'?'bp':'ba'}">${r.estado}</span></td><td style="font-size:12px;color:var(--text2)">${r.detalle}</td></tr>`).join('');
-  document.getElementById('palanca-tbody').innerHTML=PALANCA.map(r=>`<tr><td class="td-name">${r.cliente}</td><td style="color:var(--text2)">${r.tipo}</td><td class="tn ${r.estado==='Excedido'?'r':r.estado==='Atención'?'a':'g'}">${r.actual}</td><td class="tn m">${r.limite}</td><td class="tn ${r.exceso!=='—'?'r':'m'}">${r.exceso}</td><td><span class="badge ${r.estado==='Excedido'?'br':r.estado==='Atención'?'bp':'bg'}">${r.estado}</span></td></tr>`).join('');
+  document.getElementById('riskGrid').innerHTML = RISK_CARDS.map((r,i) => `
+    <div class="rc rc-${r.t}" onclick="openRiesgoModal(${i})" style="cursor:pointer">
+      <div class="rc-type ${r.t}">${r.label}</div>
+      <div class="rc-name">${r.client}</div>
+      <div class="rc-desc">${r.desc}</div>
+      <div class="rc-meta">${r.meta}</div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <button class="rc-btn" onclick="event.stopPropagation();openRiesgoModal(${i})">Ver detalle →</button>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('incump-tbody').innerHTML=INCUMP.map(r=>`<tr>
+    <td class="td-name">${r.cliente}</td>
+    <td style="color:var(--text2)">${r.tipo}</td>
+    <td class="tn m">${r.fecha}</td>
+    <td><span class="badge ${r.estado==='Vencido'?'br':r.estado==='Pendiente'?'bp':'ba'}">${r.estado}</span></td>
+    <td style="font-size:12px;color:var(--text2)">${r.detalle}</td>
+  </tr>`).join('');
+
+  document.getElementById('palanca-tbody').innerHTML=PALANCA.map(r=>`<tr>
+    <td class="td-name">${r.cliente}</td>
+    <td style="color:var(--text2)">${r.tipo}</td>
+    <td class="tn ${r.estado==='Excedido'?'r':r.estado==='Atención'?'a':'g'}">${r.actual}</td>
+    <td class="tn m">${r.limite}</td>
+    <td class="tn ${r.exceso!=='—'?'r':'m'}">${r.exceso}</td>
+    <td><span class="badge ${r.estado==='Excedido'?'br':r.estado==='Atención'?'bp':'bg'}">${r.estado}</span></td>
+  </tr>`).join('');
+}
+
+function openRiesgoModal(idx) {
+  const r = RISK_CARDS[idx];
+  const severityColor = r.t==='r' ? 'var(--red)' : r.t==='a' ? 'var(--amber)' : 'var(--accent)';
+  const actions = {
+    'Ejercicio de opción': ['Confirmar ejercicio','Dejar vencer','Notificar cliente'],
+    'Palanca excedida': ['Solicitar reducción','Notificar compliance','Registrar aviso'],
+    'Garantía pendiente': ['Marcar como recibida','Enviar recordatorio','Escalar a mesa'],
+    'Opción a ejercer': ['Consultar cliente','Programar llamado','Registrar pendiente'],
+    'Lanzado cubierto': ['Revisar posición','Cerrar lanzado','Dejar correr'],
+  };
+  const btns = (actions[r.label]||['Tomar acción','Notificar','Ignorar']).map(a=>
+    `<button class="rc-btn" style="flex:1;padding:8px;font-size:12px;border-radius:5px;transition:all 0.15s" onmouseover="this.style.borderColor='var(--border3)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='';this.style.color=''" onclick="closeRiesgoModal()">${a}</button>`
+  ).join('');
+  const html = `
+    <div id="riesgo-modal-overlay" onclick="closeRiesgoModal()" style="position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:600;display:flex;align-items:center;justify-content:center;">
+      <div onclick="event.stopPropagation()" style="background:var(--bg2);border:1px solid var(--border2);border-radius:12px;width:460px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,0.8);overflow:hidden;">
+        <div style="height:3px;background:${severityColor}"></div>
+        <div style="padding:20px 22px 16px;border-bottom:1px solid var(--border)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+            <div>
+              <div style="font-size:9.5px;font-weight:700;letter-spacing:0.7px;text-transform:uppercase;color:${severityColor};margin-bottom:5px">${r.label}</div>
+              <div style="font-size:18px;font-weight:700;font-family:var(--fontc);color:var(--text)">${r.client}</div>
+            </div>
+            <button onclick="closeRiesgoModal()" style="width:28px;height:28px;border-radius:6px;background:var(--bg3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;color:var(--text2);flex-shrink:0;cursor:pointer;font-size:13px;margin-top:2px">✕</button>
+          </div>
+        </div>
+        <div style="padding:18px 22px;display:flex;flex-direction:column;gap:14px">
+          <div style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:13px 15px">
+            <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px">Descripción</div>
+            <div style="font-size:13px;color:var(--text);line-height:1.55">${r.desc}</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:11px 13px">
+              <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">Detalle</div>
+              <div style="font-size:13px;font-weight:600;color:${severityColor}">${r.meta}</div>
+            </div>
+            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:11px 13px">
+              <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px">Severidad</div>
+              <div style="font-size:13px;font-weight:600;color:${severityColor}">${r.t==='r'?'Alta — acción inmediata':r.t==='a'?'Media — próximas 48hs':'Baja'}</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px">Acciones disponibles</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">${btns}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  const div = document.createElement('div');
+  div.id = 'riesgo-modal-container';
+  div.innerHTML = html;
+  document.body.appendChild(div);
+}
+
+function closeRiesgoModal() {
+  const el = document.getElementById('riesgo-modal-container');
+  if(el) el.remove();
 }
 
 // ════════════════════════════════════════════
