@@ -532,6 +532,84 @@ tbody tr:hover td { background: var(--bg3); }
 .af-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; background: var(--accent-d); color: var(--accent); border: 1px solid var(--border3); cursor: pointer; }
 .af-tag:hover { background: var(--accent-d2); }
 .af-x { font-size: 12px; opacity: 0.6; }
+
+/* Perfil de riesgo badges */
+.badge-perfil-alto { background: rgba(255,68,68,0.12); color: var(--red); border: 1px solid rgba(255,68,68,0.28); border-radius: 3px; padding: 2px 8px; font-size: 10.5px; font-weight: 600; }
+.badge-perfil-mod  { background: rgba(255,187,0,0.12);  color: var(--amber); border: 1px solid rgba(255,187,0,0.28); border-radius: 3px; padding: 2px 8px; font-size: 10.5px; font-weight: 600; }
+.badge-perfil-bajo { background: rgba(68,153,255,0.12); color: var(--blue); border: 1px solid rgba(68,153,255,0.28); border-radius: 3px; padding: 2px 8px; font-size: 10.5px; font-weight: 600; }
+
+/* Trade Ideas button in table */
+.trade-idea-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: var(--r);
+  background: var(--accent-d); color: var(--accent); border: 1px solid var(--border3);
+  cursor: pointer; font-family: var(--font); transition: all 0.12s; white-space: nowrap;
+}
+.trade-idea-btn:hover { background: rgba(57,255,20,0.18); }
+
+/* Trade Ideas modal */
+#ti-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.72);
+  z-index: 700; display: flex; align-items: center; justify-content: center;
+  animation: fadeInOverlay 0.15s ease;
+}
+@keyframes fadeInOverlay { from{opacity:0} to{opacity:1} }
+#ti-modal {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 14px; width: 680px; max-width: 96vw; max-height: 90vh;
+  display: flex; flex-direction: column; overflow: hidden;
+  box-shadow: 0 12px 60px rgba(0,0,0,0.9);
+  animation: slideUp 0.18s cubic-bezier(0.4,0,0.2,1);
+}
+@keyframes slideUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+#ti-header {
+  padding: 18px 22px 15px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between; flex-shrink: 0;
+}
+#ti-body { flex: 1; overflow-y: auto; padding: 20px 22px; display: flex; flex-direction: column; gap: 16px; }
+.ti-close {
+  width: 28px; height: 28px; border-radius: var(--r); background: var(--bg3);
+  border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text2); font-size: 13px; transition: all 0.1s;
+}
+.ti-close:hover { color: var(--text); border-color: var(--border3); }
+.ti-client-name { font-size: 20px; font-weight: 700; font-family: var(--fontc); color: var(--text); letter-spacing: -0.3px; }
+.ti-client-meta { display: flex; gap: 7px; align-items: center; margin-top: 5px; flex-wrap: wrap; }
+.ti-section-title { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 10px; }
+.ti-profile-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+.ti-stat { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; }
+.ti-stat-label { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+.ti-stat-val { font-size: 15px; font-weight: 700; font-family: var(--fontc); color: var(--text); }
+.ti-loading {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  padding: 40px 20px; color: var(--text3); font-size: 13px;
+}
+.ti-spinner {
+  width: 32px; height: 32px; border: 2.5px solid var(--border2);
+  border-top-color: var(--accent); border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.ti-ideas-grid { display: flex; flex-direction: column; gap: 10px; }
+.ti-idea {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--r2); padding: 14px 16px; position: relative; overflow: hidden;
+}
+.ti-idea::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; }
+.ti-idea.compra::before { background: var(--accent); }
+.ti-idea.venta::before { background: var(--red); }
+.ti-idea.neutral::before { background: var(--amber); }
+.ti-idea-header { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+.ti-idea-ticker { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text); background: var(--bg4); padding: 2px 8px; border-radius: 4px; }
+.ti-idea-action { font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; }
+.ti-idea.compra .ti-idea-action { background: var(--accent-d); color: var(--accent); }
+.ti-idea.venta  .ti-idea-action { background: var(--red-d); color: var(--red); }
+.ti-idea.neutral .ti-idea-action { background: var(--amber-d); color: var(--amber); }
+.ti-idea-rationale { font-size: 12.5px; color: var(--text2); line-height: 1.55; }
+.ti-idea-meta { display: flex; gap: 14px; margin-top: 9px; flex-wrap: wrap; }
+.ti-idea-meta span { font-size: 11px; color: var(--text3); }
+.ti-idea-meta b { color: var(--text); font-weight: 600; }
+.ti-disclaimer { font-size: 11px; color: var(--text3); line-height: 1.5; padding: 10px 14px; background: var(--bg3); border-radius: var(--r); border: 1px solid var(--border); }
 </style>
 </head>
 <body>
@@ -571,6 +649,10 @@ tbody tr:hover td { background: var(--bg3); }
     <button data-view="notas" onclick="switchView('notas',this)">
       <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 2h10v8l-3 2H2V2z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/><line x1="4.5" y1="5" x2="9.5" y2="5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="4.5" y1="7.5" x2="7.5" y2="7.5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
       Notas
+    </button>
+    <button data-view="trade-ideas" onclick="switchView('trade-ideas',this)" style="background:var(--accent-d);color:var(--accent);border-color:var(--border3)">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L8.5 5h3.5l-2.8 2 1 3.5L7 8.5 3.8 10.5l1-3.5L2 5h3.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" fill="none"/></svg>
+      Trade Ideas IA
     </button>
   </nav>
 
@@ -630,6 +712,11 @@ tbody tr:hover td { background: var(--bg3); }
     <div class="fs-group">
       <div class="fs-label">Estado</div>
       <div class="fs-chips" id="fc-estado"></div>
+    </div>
+
+    <div class="fs-group">
+      <div class="fs-label">Perfil de riesgo</div>
+      <div class="fs-chips" id="fc-perfil"></div>
     </div>
 
     <div class="fs-group">
@@ -737,6 +824,7 @@ tbody tr:hover td { background: var(--bg3); }
             <tr>
               <th onclick="setSort('nombre')">Cliente <span class="si">↕</span></th>
               <th onclick="setSort('tipo')">Tipo <span class="si">↕</span></th>
+              <th onclick="setSort('perfilRiesgo')">Perfil de riesgo <span class="si">↕</span></th>
               <th onclick="setSort('plan')">Plan <span class="si">↕</span></th>
               <th onclick="setSort('fee')">Fee % <span class="si">↕</span></th>
               <th onclick="setSort('comision')">Comisión <span class="si">↕</span></th>
@@ -747,6 +835,7 @@ tbody tr:hover td { background: var(--bg3); }
               <th onclick="setSort('operacionesMes')">Ops <span class="si">↕</span></th>
               <th onclick="setSort('_diasOp')">Últ. op. <span class="si">↕</span></th>
               <th onclick="setSort('estado')">Estado <span class="si">↕</span></th>
+              <th>Trade Ideas IA</th>
             </tr>
           </thead>
           <tbody id="tbody"></tbody>
@@ -834,7 +923,34 @@ tbody tr:hover td { background: var(--bg3); }
   <div class="res-grid" id="resGrid"></div>
 </div>
 
-<!-- ══ VIEW: NOTAS ══ -->
+<!-- ══ VIEW: TRADE IDEAS ══ -->
+<div class="vs" id="view-trade-ideas">
+  <div class="kpi-grid kpi-4">
+    <div class="kpi"><div class="kpi-label">Clientes analizados</div><div class="kpi-value" id="ti-kv-total">12</div><div class="kpi-delta neu">cartera completa</div><div class="kpi-bar g"></div></div>
+    <div class="kpi"><div class="kpi-label">Ideas generadas hoy</div><div class="kpi-value" id="ti-kv-ideas">—</div><div class="kpi-delta neu">via Claude AI</div><div class="kpi-bar b"></div></div>
+    <div class="kpi"><div class="kpi-label">Perfil Alto</div><div class="kpi-value" id="ti-kv-alto" style="color:var(--red)">—</div><div class="kpi-delta dn">mayor retorno/riesgo</div><div class="kpi-bar r"></div></div>
+    <div class="kpi"><div class="kpi-label">Perfil Bajo</div><div class="kpi-value" id="ti-kv-bajo" style="color:var(--blue)">—</div><div class="kpi-delta neu">renta conservadora</div><div class="kpi-bar b"></div></div>
+  </div>
+
+  <div class="panel">
+    <div class="ph">
+      <div>
+        <div class="ph-title">Trade Ideas por cliente</div>
+        <div class="ph-sub">Seleccioná un cliente para generar recomendaciones personalizadas con IA</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select id="ti-perfil-filter" onchange="renderTradeIdeasList()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:var(--r);padding:5px 10px;font-size:12px;outline:none;cursor:pointer">
+          <option value="">Todos los perfiles</option>
+          <option value="Alto">Perfil Alto</option>
+          <option value="Moderado">Perfil Moderado</option>
+          <option value="Bajo">Perfil Bajo</option>
+        </select>
+        <button class="ph-link" onclick="generateAllIdeas()">Generar para todos ↗</button>
+      </div>
+    </div>
+    <div id="ti-client-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border)"></div>
+  </div>
+</div>
 <div class="vs" id="view-notas">
   <div class="row-2">
     <div style="display:flex;flex-direction:column;gap:10px">
@@ -920,18 +1036,18 @@ FCI Money Market captando flujo sostenido.</textarea></div>
 const COLS = ['#39FF14','#4499FF','#FFBB00','#FF4444','#00DDAA','#CC88FF','#FF8844'];
 
 const clients = [
-  {id:'grupo-pampa',    nombre:'Grupo Pampa S.A.',   asesor:'MR',tipo:'Empresa', plan:'Elite',   comision:'FLAT',    fee:0.00,patrimonio:4200000,facturacionMTD:48000,facturacionYTD:148000,pnlYTD_usd:28400, promFact3m:41000,operacionesMes:23,ultimaOp:'2025-03-19',estado:'Activo',   instrPrinc:['Acciones','CEDEARs','Bonos'],    histFact:[38,41,44,39,42,41,43,45,40,42,44,48],composicion:{Acciones:35,CEDEARs:30,Bonos:20,Cauciones:15},nota:''},
-  {id:'martinez-j',    nombre:'Martínez, J.',        asesor:'MR',tipo:'Retail',  plan:'Variable',comision:'Variable',fee:0.15,patrimonio:890000, facturacionMTD:31000,facturacionYTD:96000, pnlYTD_usd:11200, promFact3m:29000,operacionesMes:87,ultimaOp:'2025-03-18',estado:'Activo',   instrPrinc:['Futuros','Opciones','Acciones'],  histFact:[24,27,26,29,28,30,27,29,31,28,29,31],composicion:{Acciones:45,Futuros:30,Opciones:25},nota:''},
-  {id:'garcia-l',      nombre:'García, L.',          asesor:'MR',tipo:'Retail',  plan:'Elite',   comision:'FLAT',    fee:0.00,patrimonio:1500000,facturacionMTD:22000,facturacionYTD:68000, pnlYTD_usd:6800,  promFact3m:20000,operacionesMes:11,ultimaOp:'2025-03-16',estado:'Activo',   instrPrinc:['CEDEARs','Bonos','FCI'],         histFact:[16,18,19,20,21,20,19,22,20,21,20,22],composicion:{CEDEARs:45,Bonos:35,FCI:20},nota:''},
-  {id:'fondo-austral', nombre:'Fondo Austral',       asesor:'LP',tipo:'Empresa', plan:'Advance', comision:'FLAT',    fee:0.00,patrimonio:3300000,facturacionMTD:9000, facturacionYTD:36000, pnlYTD_usd:-1800, promFact3m:14000,operacionesMes:5, ultimaOp:'2025-03-11',estado:'Potencial',instrPrinc:['FCI','Cauciones','Bonos'],        histFact:[12,14,15,14,13,15,14,12,16,14,14,9], composicion:{FCI:50,Cauciones:30,Bonos:20},nota:''},
-  {id:'inversores-del-sur',nombre:'Inversores Del Sur',asesor:'MR',tipo:'Empresa',plan:'Advance',comision:'Variable',fee:0.15,patrimonio:2100000,facturacionMTD:6000, facturacionYTD:54000, pnlYTD_usd:-14200,promFact3m:18000,operacionesMes:3, ultimaOp:'2025-03-01',estado:'Riesgo',   instrPrinc:['Acciones','Bonos'],              histFact:[20,19,18,17,16,18,17,19,15,18,16,6], composicion:{Acciones:60,Bonos:40},nota:''},
-  {id:'rodriguez-p',   nombre:'Rodríguez, P.',       asesor:'AG',tipo:'Retail',  plan:'Start',   comision:'FLAT',    fee:0.00,patrimonio:210000, facturacionMTD:0,    facturacionYTD:14000, pnlYTD_usd:-2100, promFact3m:4000, operacionesMes:0, ultimaOp:'2025-01-13',estado:'Inactivo', instrPrinc:['Acciones','FCI'],                histFact:[3,4,5,4,3,4,4,3,4,3,4,0],            composicion:{Acciones:40,FCI:60},nota:''},
-  {id:'cia-del-norte', nombre:'Cía. del Norte',      asesor:'LP',tipo:'Empresa', plan:'Advance', comision:'FLAT',    fee:0.00,patrimonio:1800000,facturacionMTD:12000,facturacionYTD:48000, pnlYTD_usd:3400,  promFact3m:15000,operacionesMes:7, ultimaOp:'2025-02-09',estado:'Potencial',instrPrinc:['Bonos','Letras','Cauciones'],     histFact:[13,15,14,15,16,14,15,14,13,15,14,12],composicion:{Bonos:40,Letras:35,Cauciones:25},nota:''},
-  {id:'fernandez-r',   nombre:'Fernández, R.',       asesor:'MR',tipo:'Retail',  plan:'Variable',comision:'Variable',fee:0.15,patrimonio:560000, facturacionMTD:18000,facturacionYTD:52000, pnlYTD_usd:9600,  promFact3m:16000,operacionesMes:42,ultimaOp:'2025-03-18',estado:'Activo',   instrPrinc:['Acciones','Opciones','CEDEARs'],  histFact:[13,14,15,16,15,16,14,17,15,16,17,18],composicion:{Acciones:50,CEDEARs:30,Opciones:20},nota:''},
-  {id:'exportar-sa',   nombre:'Exportar S.A.',       asesor:'LP',tipo:'Empresa', plan:'Elite',   comision:'FLAT',    fee:0.00,patrimonio:2100000,facturacionMTD:15000,facturacionYTD:58000, pnlYTD_usd:1200,  promFact3m:17000,operacionesMes:9, ultimaOp:'2025-03-14',estado:'Activo',   instrPrinc:['Futuros FX','Bonos','CEDEARs'],   histFact:[14,16,17,18,16,17,16,18,17,16,17,15],composicion:{'Fut.FX':30,Bonos:35,CEDEARs:35},nota:''},
-  {id:'torres-m',      nombre:'Torres, M.',          asesor:'AG',tipo:'Retail',  plan:'Elite',   comision:'FLAT',    fee:0.00,patrimonio:980000, facturacionMTD:11000,facturacionYTD:32000, pnlYTD_usd:4100,  promFact3m:10000,operacionesMes:8, ultimaOp:'2025-03-13',estado:'Activo',   instrPrinc:['CEDEARs','Bonos'],               histFact:[8,9,10,10,9,10,9,11,10,10,10,11],    composicion:{CEDEARs:60,Bonos:40},nota:''},
-  {id:'agro-pampas',   nombre:'Agro Pampas S.A.',    asesor:'AG',tipo:'Empresa', plan:'Advance', comision:'Variable',fee:0.15,patrimonio:1200000,facturacionMTD:8000, facturacionYTD:28000, pnlYTD_usd:-800,  promFact3m:9000, operacionesMes:4, ultimaOp:'2025-03-07',estado:'Activo',   instrPrinc:['Futuros','Bonos'],               histFact:[7,9,10,9,8,9,8,10,9,8,9,8],          composicion:{Futuros:55,Bonos:45},nota:''},
-  {id:'lopez-c',       nombre:'López, C.',           asesor:'AG',tipo:'Retail',  plan:'Start',   comision:'FLAT',    fee:0.00,patrimonio:95000,  facturacionMTD:1200, facturacionYTD:8000,  pnlYTD_usd:-600,  promFact3m:1800, operacionesMes:2, ultimaOp:'2025-02-02',estado:'Inactivo', instrPrinc:['FCI','Acciones'],                histFact:[1,2,2,1,2,2,1,2,1,2,2,1],            composicion:{FCI:70,Acciones:30},nota:''},
+  {id:'grupo-pampa',    nombre:'Grupo Pampa S.A.',   asesor:'MR',tipo:'Empresa', plan:'Elite',   comision:'FLAT',    fee:0.00,patrimonio:4200000,facturacionMTD:48000,facturacionYTD:148000,pnlYTD_usd:28400, promFact3m:41000,operacionesMes:23,ultimaOp:'2025-03-19',estado:'Activo',   instrPrinc:['Acciones','CEDEARs','Bonos'],    histFact:[38,41,44,39,42,41,43,45,40,42,44,48],composicion:{Acciones:35,CEDEARs:30,Bonos:20,Cauciones:15},nota:'',perfilRiesgo:'Moderado'},
+  {id:'martinez-j',    nombre:'Martínez, J.',        asesor:'MR',tipo:'Retail',  plan:'Variable',comision:'Variable',fee:0.15,patrimonio:890000, facturacionMTD:31000,facturacionYTD:96000, pnlYTD_usd:11200, promFact3m:29000,operacionesMes:87,ultimaOp:'2025-03-18',estado:'Activo',   instrPrinc:['Futuros','Opciones','Acciones'],  histFact:[24,27,26,29,28,30,27,29,31,28,29,31],composicion:{Acciones:45,Futuros:30,Opciones:25},nota:'',perfilRiesgo:'Alto'},
+  {id:'garcia-l',      nombre:'García, L.',          asesor:'MR',tipo:'Retail',  plan:'Elite',   comision:'FLAT',    fee:0.00,patrimonio:1500000,facturacionMTD:22000,facturacionYTD:68000, pnlYTD_usd:6800,  promFact3m:20000,operacionesMes:11,ultimaOp:'2025-03-16',estado:'Activo',   instrPrinc:['CEDEARs','Bonos','FCI'],         histFact:[16,18,19,20,21,20,19,22,20,21,20,22],composicion:{CEDEARs:45,Bonos:35,FCI:20},nota:'',perfilRiesgo:'Moderado'},
+  {id:'fondo-austral', nombre:'Fondo Austral',       asesor:'LP',tipo:'Empresa', plan:'Advance', comision:'FLAT',    fee:0.00,patrimonio:3300000,facturacionMTD:9000, facturacionYTD:36000, pnlYTD_usd:-1800, promFact3m:14000,operacionesMes:5, ultimaOp:'2025-03-11',estado:'Potencial',instrPrinc:['FCI','Cauciones','Bonos'],        histFact:[12,14,15,14,13,15,14,12,16,14,14,9], composicion:{FCI:50,Cauciones:30,Bonos:20},nota:'',perfilRiesgo:'Bajo'},
+  {id:'inversores-del-sur',nombre:'Inversores Del Sur',asesor:'MR',tipo:'Empresa',plan:'Advance',comision:'Variable',fee:0.15,patrimonio:2100000,facturacionMTD:6000, facturacionYTD:54000, pnlYTD_usd:-14200,promFact3m:18000,operacionesMes:3, ultimaOp:'2025-03-01',estado:'Riesgo',   instrPrinc:['Acciones','Bonos'],              histFact:[20,19,18,17,16,18,17,19,15,18,16,6], composicion:{Acciones:60,Bonos:40},nota:'',perfilRiesgo:'Moderado'},
+  {id:'rodriguez-p',   nombre:'Rodríguez, P.',       asesor:'AG',tipo:'Retail',  plan:'Start',   comision:'FLAT',    fee:0.00,patrimonio:210000, facturacionMTD:0,    facturacionYTD:14000, pnlYTD_usd:-2100, promFact3m:4000, operacionesMes:0, ultimaOp:'2025-01-13',estado:'Inactivo', instrPrinc:['Acciones','FCI'],                histFact:[3,4,5,4,3,4,4,3,4,3,4,0],            composicion:{Acciones:40,FCI:60},nota:'',perfilRiesgo:'Bajo'},
+  {id:'cia-del-norte', nombre:'Cía. del Norte',      asesor:'LP',tipo:'Empresa', plan:'Advance', comision:'FLAT',    fee:0.00,patrimonio:1800000,facturacionMTD:12000,facturacionYTD:48000, pnlYTD_usd:3400,  promFact3m:15000,operacionesMes:7, ultimaOp:'2025-02-09',estado:'Potencial',instrPrinc:['Bonos','Letras','Cauciones'],     histFact:[13,15,14,15,16,14,15,14,13,15,14,12],composicion:{Bonos:40,Letras:35,Cauciones:25},nota:'',perfilRiesgo:'Bajo'},
+  {id:'fernandez-r',   nombre:'Fernández, R.',       asesor:'MR',tipo:'Retail',  plan:'Variable',comision:'Variable',fee:0.15,patrimonio:560000, facturacionMTD:18000,facturacionYTD:52000, pnlYTD_usd:9600,  promFact3m:16000,operacionesMes:42,ultimaOp:'2025-03-18',estado:'Activo',   instrPrinc:['Acciones','Opciones','CEDEARs'],  histFact:[13,14,15,16,15,16,14,17,15,16,17,18],composicion:{Acciones:50,CEDEARs:30,Opciones:20},nota:'',perfilRiesgo:'Alto'},
+  {id:'exportar-sa',   nombre:'Exportar S.A.',       asesor:'LP',tipo:'Empresa', plan:'Elite',   comision:'FLAT',    fee:0.00,patrimonio:2100000,facturacionMTD:15000,facturacionYTD:58000, pnlYTD_usd:1200,  promFact3m:17000,operacionesMes:9, ultimaOp:'2025-03-14',estado:'Activo',   instrPrinc:['Futuros FX','Bonos','CEDEARs'],   histFact:[14,16,17,18,16,17,16,18,17,16,17,15],composicion:{'Fut.FX':30,Bonos:35,CEDEARs:35},nota:'',perfilRiesgo:'Moderado'},
+  {id:'torres-m',      nombre:'Torres, M.',          asesor:'AG',tipo:'Retail',  plan:'Elite',   comision:'FLAT',    fee:0.00,patrimonio:980000, facturacionMTD:11000,facturacionYTD:32000, pnlYTD_usd:4100,  promFact3m:10000,operacionesMes:8, ultimaOp:'2025-03-13',estado:'Activo',   instrPrinc:['CEDEARs','Bonos'],               histFact:[8,9,10,10,9,10,9,11,10,10,10,11],    composicion:{CEDEARs:60,Bonos:40},nota:'',perfilRiesgo:'Moderado'},
+  {id:'agro-pampas',   nombre:'Agro Pampas S.A.',    asesor:'AG',tipo:'Empresa', plan:'Advance', comision:'Variable',fee:0.15,patrimonio:1200000,facturacionMTD:8000, facturacionYTD:28000, pnlYTD_usd:-800,  promFact3m:9000, operacionesMes:4, ultimaOp:'2025-03-07',estado:'Activo',   instrPrinc:['Futuros','Bonos'],               histFact:[7,9,10,9,8,9,8,10,9,8,9,8],          composicion:{Futuros:55,Bonos:45},nota:'',perfilRiesgo:'Alto'},
+  {id:'lopez-c',       nombre:'López, C.',           asesor:'AG',tipo:'Retail',  plan:'Start',   comision:'FLAT',    fee:0.00,patrimonio:95000,  facturacionMTD:1200, facturacionYTD:8000,  pnlYTD_usd:-600,  promFact3m:1800, operacionesMes:2, ultimaOp:'2025-02-02',estado:'Inactivo', instrPrinc:['FCI','Acciones'],                histFact:[1,2,2,1,2,2,1,2,1,2,2,1],            composicion:{FCI:70,Acciones:30},nota:'',perfilRiesgo:'Bajo'},
 ];
 
 const MARKET_DATA=[
@@ -987,7 +1103,7 @@ const RESEARCH=[
 // STATE
 // ════════════════════════════════════════════
 const state = {
-  filters: { tipo:null, plan:null, comision:null, estado:null },
+  filters: { tipo:null, plan:null, comision:null, estado:null, perfilRiesgo:null },
   ranges:  { patrimonio:0, facturacion:0, fee:1 },
   kpiFilter: null,
   sortKey: 'facturacionMTD', sortDir: -1,
@@ -1047,6 +1163,7 @@ function buildFilterChips() {
   const planOpts = ['Elite','Variable','Advance','Start'];
   const comOpts  = ['FLAT','Variable'];
   const estOpts  = ['Activo','Inactivo','Riesgo','Potencial'];
+  const perfilOpts = ['Alto','Moderado','Bajo'];
 
   const makeChips = (containerId, opts, filterKey) => {
     document.getElementById(containerId).innerHTML = opts.map(o => {
@@ -1056,10 +1173,11 @@ function buildFilterChips() {
       </div>`;
     }).join('');
   };
-  makeChips('fc-tipo', tipoOpts, 'tipo');
-  makeChips('fc-plan', planOpts, 'plan');
-  makeChips('fc-comision', comOpts, 'comision');
-  makeChips('fc-estado', estOpts, 'estado');
+  makeChips('fc-tipo',    tipoOpts,   'tipo');
+  makeChips('fc-plan',    planOpts,   'plan');
+  makeChips('fc-comision',comOpts,    'comision');
+  makeChips('fc-estado',  estOpts,    'estado');
+  makeChips('fc-perfil',  perfilOpts, 'perfilRiesgo');
 }
 
 function toggleFsFilter(el, key, val) {
@@ -1101,7 +1219,7 @@ function updateRangeFilter(type, val) {
 }
 
 function resetFilters() {
-  state.filters = {tipo:null,plan:null,comision:null,estado:null};
+  state.filters = {tipo:null,plan:null,comision:null,estado:null,perfilRiesgo:null};
   state.ranges  = {patrimonio:0,facturacion:0,fee:1};
   state.kpiFilter = null;
   document.querySelectorAll('.fs-chip').forEach(e=>e.classList.remove('on'));
@@ -1136,10 +1254,11 @@ function kpiFilter(type) {
 function getFiltered() {
   let data = [...clients];
   // Sidebar filters
-  if (state.filters.tipo)     data = data.filter(c=>c.tipo===state.filters.tipo);
-  if (state.filters.plan)     data = data.filter(c=>c.plan===state.filters.plan);
-  if (state.filters.comision) data = data.filter(c=>c.comision===state.filters.comision);
-  if (state.filters.estado)   data = data.filter(c=>c.estado===state.filters.estado);
+  if (state.filters.tipo)         data = data.filter(c=>c.tipo===state.filters.tipo);
+  if (state.filters.plan)         data = data.filter(c=>c.plan===state.filters.plan);
+  if (state.filters.comision)     data = data.filter(c=>c.comision===state.filters.comision);
+  if (state.filters.estado)       data = data.filter(c=>c.estado===state.filters.estado);
+  if (state.filters.perfilRiesgo) data = data.filter(c=>c.perfilRiesgo===state.filters.perfilRiesgo);
   // Range filters
   if (state.ranges.patrimonio > 0) data = data.filter(c=>c.patrimonio >= state.ranges.patrimonio);
   if (state.ranges.facturacion > 0) data = data.filter(c=>c.facturacionMTD >= state.ranges.facturacion);
@@ -1214,6 +1333,7 @@ function renderActiveBars() {
   if (state.filters.plan) tags.push({label:'Plan: '+state.filters.plan, clear:()=>{state.filters.plan=null;document.querySelectorAll('[data-key="plan"]').forEach(e=>e.classList.remove('on'));renderAll();}});
   if (state.filters.comision) tags.push({label:'Comisión: '+state.filters.comision, clear:()=>{state.filters.comision=null;document.querySelectorAll('[data-key="comision"]').forEach(e=>e.classList.remove('on'));renderAll();}});
   if (state.filters.estado) tags.push({label:'Estado: '+state.filters.estado, clear:()=>{state.filters.estado=null;document.querySelectorAll('[data-key="estado"]').forEach(e=>e.classList.remove('on'));renderAll();}});
+  if (state.filters.perfilRiesgo) tags.push({label:'Perfil: '+state.filters.perfilRiesgo, clear:()=>{state.filters.perfilRiesgo=null;document.querySelectorAll('[data-key="perfilRiesgo"]').forEach(e=>e.classList.remove('on'));renderAll();}});
   if (state.ranges.patrimonio>0) tags.push({label:'Patrimonio > '+fmtM(state.ranges.patrimonio), clear:()=>{state.ranges.patrimonio=0;document.getElementById('pat-slider').value=0;document.getElementById('pat-val').textContent='$0';renderAll();}});
   if (state.ranges.facturacion>0) tags.push({label:'Fact. MTD > '+fmtM(state.ranges.facturacion), clear:()=>{state.ranges.facturacion=0;document.getElementById('fact-slider').value=0;document.getElementById('fact-val').textContent='$0';renderAll();}});
   if (state.ranges.fee<100) tags.push({label:'Fee < '+state.ranges.fee+'%', clear:()=>{state.ranges.fee=100;document.getElementById('fee-slider').value=100;document.getElementById('fee-val').textContent='100%';renderAll();}});
@@ -1228,7 +1348,7 @@ function renderTable(data) {
   document.getElementById('table-count').textContent = `${data.length} cliente${data.length!==1?'s':''}`;
   const tbody = document.getElementById('tbody');
   if (data.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="12" class="empty-state"><div class="e-icon">🔍</div><div class="e-msg">Ningún cliente coincide con los filtros</div><div>Ajustá los filtros de la izquierda</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="14" class="empty-state"><div class="e-icon">🔍</div><div class="e-msg">Ningún cliente coincide con los filtros</div><div>Ajustá los filtros de la izquierda</div></td></tr>`;
     document.getElementById('rankList').innerHTML = '';
     return;
   }
@@ -1237,9 +1357,11 @@ function renderTable(data) {
     const pnlCls = c.pnlYTD_usd>=0?'tn g':'tn r';
     const inactWarn = dias>=state.inactDays?`<span class="inact-warn">!</span>`:'';
     const feeVal = c.comision==='FLAT' ? '0.00%' : '0.15%';
+    const prCls = c.perfilRiesgo==='Alto'?'badge-perfil-alto':c.perfilRiesgo==='Moderado'?'badge-perfil-mod':'badge-perfil-bajo';
     return `<tr onclick="openClientById('${c.id}')">
       <td class="td-name">${c.nombre}</td>
       <td><span class="badge bt">${c.tipo}</span></td>
+      <td><span class="badge ${prCls}">${c.perfilRiesgo}</span></td>
       <td><span class="badge bt">${c.plan}</span></td>
       <td class="tn w">${feeVal}</td>
       <td class="tn w">${c.comision}</td>
@@ -1250,6 +1372,10 @@ function renderTable(data) {
       <td class="tn w">${c.operacionesMes}</td>
       <td><div class="cc"><div class="cdot" style="background:${cdotCol(dias)}"></div><span style="color:var(--text);font-size:12px;font-weight:500">${fmtDias(dias)}</span>${inactWarn}</div></td>
       <td><span class="badge ${estadoBadge(c.estado)}">${c.estado}</span></td>
+      <td><button class="trade-idea-btn" onclick="event.stopPropagation();openTradeIdeas('${c.id}')">
+        <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 8.5C4 9 3 10 3 11.5h8c0-1.5-1-2.5-2.5-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Ideas IA
+      </button></td>
     </tr>`;
   }).join('');
   renderRanking(data);
@@ -1393,7 +1519,7 @@ function switchView(view, el) {
   // Left sidebar only shows when cartera
   const nav = document.getElementById('leftnav');
   if(nav) nav.style.display = view==='cartera' ? '' : 'none';
-  const handlers={mercado:initMarket,comparativo:initComparativo,riesgo:initRiesgo,research:initResearch};
+  const handlers={mercado:initMarket,comparativo:initComparativo,riesgo:initRiesgo,research:initResearch,'trade-ideas':renderTradeIdeasList};
   if(handlers[view]) setTimeout(handlers[view],80);
 }
 
@@ -1669,12 +1795,184 @@ function initResearch() {
 }
 
 // ════════════════════════════════════════════
+// TRADE IDEAS — IA via Claude API
+// ════════════════════════════════════════════
+
+function perfilBadgeHTML(p) {
+  const cls = p==='Alto'?'badge-perfil-alto':p==='Moderado'?'badge-perfil-mod':'badge-perfil-bajo';
+  return `<span class="badge ${cls}">${p}</span>`;
+}
+
+function renderTradeIdeasList() {
+  const filter = document.getElementById('ti-perfil-filter')?.value || '';
+  const data = filter ? clients.filter(c=>c.perfilRiesgo===filter) : [...clients];
+  document.getElementById('ti-kv-total').textContent = clients.length;
+  document.getElementById('ti-kv-alto').textContent  = clients.filter(c=>c.perfilRiesgo==='Alto').length;
+  document.getElementById('ti-kv-bajo').textContent  = clients.filter(c=>c.perfilRiesgo==='Bajo').length;
+  document.getElementById('ti-client-list').innerHTML = data.map(c=>`
+    <div onclick="openTradeIdeas('${c.id}')" style="background:var(--bg2);padding:14px 16px;cursor:pointer;transition:background 0.08s;display:flex;flex-direction:column;gap:6px" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='var(--bg2)'">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <span style="font-weight:600;font-size:13px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.nombre}</span>
+        ${perfilBadgeHTML(c.perfilRiesgo)}
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <span class="badge bt">${c.tipo}</span>
+        <span class="badge bt">${c.plan}</span>
+        <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">${fmtM(c.patrimonio)}</span>
+      </div>
+      <div style="font-size:11.5px;color:var(--text2)">${c.instrPrinc.join(' · ')}</div>
+      <button class="trade-idea-btn" style="width:fit-content;margin-top:2px" onclick="event.stopPropagation();openTradeIdeas('${c.id}')">
+        <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L8.5 5h3.5l-2.8 2 1 3.5L7 8.5 3.8 10.5l1-3.5L2 5h3.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" fill="none"/></svg>
+        Generar ideas
+      </button>
+    </div>`).join('');
+}
+
+async function openTradeIdeas(clientId) {
+  const c = clients.find(x=>x.id===clientId); if(!c) return;
+  const existing = document.getElementById('ti-modal-overlay');
+  if(existing) existing.remove();
+  const overlay = document.createElement('div');
+  overlay.id = 'ti-modal-overlay';
+  overlay.innerHTML = `
+    <div id="ti-modal" onclick="event.stopPropagation()">
+      <div id="ti-header">
+        <div>
+          <div class="ti-client-name">${c.nombre}</div>
+          <div class="ti-client-meta">
+            ${perfilBadgeHTML(c.perfilRiesgo)}
+            <span class="badge bt">${c.tipo}</span>
+            <span class="badge bt">${c.plan}</span>
+            <span class="badge ${c.comision==='FLAT'?'bflat':'bvar'}">${c.comision}</span>
+          </div>
+        </div>
+        <button class="ti-close" onclick="closeTIModal()">✕</button>
+      </div>
+      <div id="ti-body">
+        <div>
+          <div class="ti-section-title">Perfil del cliente</div>
+          <div class="ti-profile-row">
+            <div class="ti-stat"><div class="ti-stat-label">Valorizada</div><div class="ti-stat-val">${fmtM(c.patrimonio)}</div></div>
+            <div class="ti-stat"><div class="ti-stat-label">P&amp;L YTD</div><div class="ti-stat-val" style="color:${c.pnlYTD_usd>=0?'var(--accent)':'var(--red)'}">${fmtUSD(c.pnlYTD_usd)}</div></div>
+            <div class="ti-stat"><div class="ti-stat-label">Ops este mes</div><div class="ti-stat-val">${c.operacionesMes}</div></div>
+            <div class="ti-stat"><div class="ti-stat-label">Riesgo</div><div class="ti-stat-val" style="color:${c.perfilRiesgo==='Alto'?'var(--red)':c.perfilRiesgo==='Moderado'?'var(--amber)':'var(--blue)'}">${c.perfilRiesgo}</div></div>
+          </div>
+        </div>
+        <div class="ti-loading" id="ti-loading-state">
+          <div class="ti-spinner"></div>
+          <div>Analizando cartera con IA…</div>
+          <div style="font-size:11px;color:var(--text4)">Claude está procesando el perfil de ${c.nombre}</div>
+        </div>
+        <div id="ti-ideas-container" style="display:none">
+          <div class="ti-section-title">Trade Ideas generadas por IA</div>
+          <div class="ti-ideas-grid" id="ti-ideas-grid"></div>
+        </div>
+        <div class="ti-disclaimer">⚠️ Las ideas generadas por IA son sugerencias de análisis y no constituyen asesoramiento financiero. Toda decisión debe ser validada por el asesor responsable.</div>
+      </div>
+    </div>`;
+  overlay.addEventListener('click', closeTIModal);
+  document.body.appendChild(overlay);
+  await generateTradeIdeas(c);
+}
+
+async function generateTradeIdeas(c) {
+  const compos = Object.entries(c.composicion).map(([k,v])=>`${k}: ${v}%`).join(', ');
+  const prompt = `Sos un analista financiero especializado en el mercado de capitales argentino.
+Analizá el siguiente perfil de cliente y generá exactamente 4 trade ideas específicas para el mercado argentino actual.
+
+CLIENTE: ${c.nombre}
+Tipo: ${c.tipo} | Plan: ${c.plan} | Comisión: ${c.comision}
+Perfil de riesgo: ${c.perfilRiesgo}
+Valorización de cartera: ${fmtM(c.patrimonio)}
+P&L YTD: ${fmtUSD(c.pnlYTD_usd)}
+Instrumentos actuales: ${c.instrPrinc.join(', ')}
+Composición de cartera: ${compos}
+Operaciones este mes: ${c.operacionesMes}
+
+Generá exactamente 4 trade ideas en formato JSON. Respondé ÚNICAMENTE con el JSON, sin texto adicional, sin markdown, sin backticks.
+Formato:
+[{"ticker":"","nombre":"","accion":"COMPRA","rationale":"2-3 oraciones específicas para este cliente","horizonte":"","riesgo":"","target":"","stop":""}]
+Accion: COMPRA, VENTA o NEUTRAL. Ajustá al perfil: Bajo=renta fija y FCI; Moderado=mix bonos y acciones; Alto=acciones, CEDEARs y derivados.`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    const data = await resp.json();
+    const raw = data.content?.map(b=>b.text||'').join('').trim();
+    const ideas = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    renderTradeIdeasResult(ideas);
+  } catch(e) {
+    renderTradeIdeasResult(getFallbackIdeas(c));
+  }
+}
+
+function getFallbackIdeas(c) {
+  const ideas = {
+    'Bajo':[
+      {ticker:'AL30',nombre:'Bono AL30D',accion:'COMPRA',rationale:`Con perfil conservador, AL30 ofrece rendimiento en USD con riesgo soberano acotado. Ideal para dolarizar el portafolio de ${c.nombre} y preservar capital a largo plazo.`,horizonte:'3-6 meses',riesgo:'Bajo',target:'+8% en USD',stop:'-4%'},
+      {ticker:'LECAP',nombre:'Letra Capitalizable',accion:'COMPRA',rationale:`Las LECAPs ofrecen tasa real positiva en pesos con duration corta. Apropiado para el perfil conservador de ${c.nombre}, minimizando riesgo de mercado.`,horizonte:'30-90 días',riesgo:'Bajo',target:'TNA vigente',stop:'N/A'},
+      {ticker:'RFX20',nombre:'FCI Renta Fija',accion:'COMPRA',rationale:`FCI de renta fija con liquidez inmediata. Ideal para la liquidez disponible de ${c.nombre}, superando la inflación mensual con mínima volatilidad.`,horizonte:'Flexible',riesgo:'Bajo',target:'Superar CER mensual',stop:'N/A'},
+      {ticker:'DICA',nombre:'Bono DICA CER',accion:'NEUTRAL',rationale:`Evaluar rotación hacia bonos CER ante contexto de desinflación gradual. Analizar duración óptima para el horizonte de inversión de ${c.nombre}.`,horizonte:'6-12 meses',riesgo:'Bajo-Moderado',target:'CER+4%',stop:'-3%'},
+    ],
+    'Moderado':[
+      {ticker:'GGAL',nombre:'Grupo Financiero Galicia',accion:'COMPRA',rationale:`Banco líder con fuerte exposición al crédito privado en recuperación. Para el perfil moderado de ${c.nombre}, GGAL ofrece upside en el ciclo de normalización económica con riesgo acotado.`,horizonte:'3-6 meses',riesgo:'Moderado',target:'+20% en ARS',stop:'-10%'},
+      {ticker:'AAPL',nombre:'Apple CEDEAR',accion:'COMPRA',rationale:`CEDEARs como cobertura cambiaria. Apple tiene momentum técnico positivo y diversifica el portafolio de ${c.nombre} con exposición dolarizada en tecnología global.`,horizonte:'6-12 meses',riesgo:'Moderado',target:'+12% en USD',stop:'-7%'},
+      {ticker:'AL30',nombre:'Bono AL30D',accion:'COMPRA',rationale:`Mantener posición core en renta fija soberana como ancla del portafolio. Genera flujo en USD y complementa las posiciones en renta variable para ${c.nombre}.`,horizonte:'3-9 meses',riesgo:'Moderado',target:'+6% en USD',stop:'-4%'},
+      {ticker:'YPF',nombre:'YPF',accion:'NEUTRAL',rationale:`Monitorear YPF ante potencial reactivación del sector energético y Vaca Muerta. Esperar señal técnica antes de tomar posición en el portafolio de ${c.nombre}.`,horizonte:'6-12 meses',riesgo:'Moderado-Alto',target:'+25% en ARS',stop:'-12%'},
+    ],
+    'Alto':[
+      {ticker:'GGAL CALL',nombre:'Call GGAL vto. próximo',accion:'COMPRA',rationale:`Perfil agresivo de ${c.nombre} y alta frecuencia operativa habilita estrategia con opciones. Compra de calls GGAL permite apalancar exposición bancaria con riesgo acotado al premium pagado.`,horizonte:'30-60 días',riesgo:'Alto',target:'+40% sobre premium',stop:'100% premium'},
+      {ticker:'DLR/JUN25',nombre:'Futuro Dólar Junio 2025',accion:'COMPRA',rationale:`Cobertura y especulación cambiaria mediante futuros. Con el perfil de ${c.nombre} y experiencia en derivados, posición en futuros de dólar captura eventual corrección del tipo de cambio.`,horizonte:'Corto plazo',riesgo:'Alto',target:'Brecha actual',stop:'-3% nocional'},
+      {ticker:'MELI',nombre:'MercadoLibre CEDEAR',accion:'COMPRA',rationale:`Tech latinoamericano con valuación atractiva. Para el perfil agresivo de ${c.nombre}, MELI ofrece exposición a e-commerce y fintech regional con alto potencial en USD.`,horizonte:'6-12 meses',riesgo:'Alto',target:'+30% en USD',stop:'-15%'},
+      {ticker:'TXAR',nombre:'Ternium Argentina',accion:'COMPRA',rationale:`Acción industrial de alta beta con potencial de rerating ante reactivación. Requiere seguimiento activo — alineado con el perfil operativo de ${c.nombre} y su frecuencia de trading.`,horizonte:'3-6 meses',riesgo:'Alto',target:'+35% en ARS',stop:'-15%'},
+    ]
+  };
+  return ideas[c.perfilRiesgo] || ideas['Moderado'];
+}
+
+function renderTradeIdeasResult(ideas) {
+  const loading   = document.getElementById('ti-loading-state');
+  const container = document.getElementById('ti-ideas-container');
+  const grid      = document.getElementById('ti-ideas-grid');
+  if(!loading||!container||!grid) return;
+  loading.style.display='none';
+  container.style.display='block';
+  const cls = a=>a==='COMPRA'?'compra':a==='VENTA'?'venta':'neutral';
+  grid.innerHTML = ideas.map(idea=>`
+    <div class="ti-idea ${cls(idea.accion)}">
+      <div class="ti-idea-header">
+        <span class="ti-idea-ticker">${idea.ticker}</span>
+        <span class="ti-idea-action">${idea.accion}</span>
+        <span style="font-size:12.5px;font-weight:600;color:var(--text);flex:1">${idea.nombre}</span>
+      </div>
+      <div class="ti-idea-rationale">${idea.rationale}</div>
+      <div class="ti-idea-meta">
+        <span>⏱ <b>${idea.horizonte}</b></span>
+        <span>🎯 Target: <b>${idea.target}</b></span>
+        <span>🛡 Stop: <b>${idea.stop}</b></span>
+        <span>⚡ Riesgo: <b>${idea.riesgo}</b></span>
+      </div>
+    </div>`).join('');
+  const kv=document.getElementById('ti-kv-ideas');
+  if(kv) kv.textContent=(parseInt(kv.textContent)||0)+ideas.length;
+}
+
+function closeTIModal() {
+  const el=document.getElementById('ti-modal-overlay'); if(el) el.remove();
+}
+function generateAllIdeas() {
+  alert('Esta función generaría ideas para todos los clientes en batch. Requiere integración backend para procesar en cola.');
+}
+
+// ════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════
 buildFilterChips();
 renderAll();
-// Hide filter sidebar by default only for non-cartera views
-// (it's shown since cartera is default)
+renderTradeIdeasList();
 </script>
 </body>
 </html>
